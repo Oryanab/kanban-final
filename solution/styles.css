@@ -6,27 +6,39 @@ body {
 }
 
 #main-div {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
+  display: block;
+  text-align: center;
+  justify-content: center;
 }
 
 .section-divs {
   display: grid;
   margin: 5rem auto;
   width: min(90% 75rem);
-  grid-auto-flow: column;
+  grid-auto-flow: row;
   justify-items: center;
   justify-content: space-evenly;
+  gap: 1em;
+}
+
+@media (min-width: 45em) {
+  .section-divs {
+    grid-auto-flow: column;
+  }
 }
 
 .section {
   text-align: center;
   padding: 10px;
-  background-color: white;
   width: 400px;
+  background-color: white;
   box-shadow: black 10px;
   z-index: 3;
   border: solid 2px white;
   border-radius: 5px;
+}
+
+.section-title {
+  text-align: left;
+  margin-left: 20px;
 }
