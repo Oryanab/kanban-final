@@ -5,6 +5,25 @@ body {
   background-color: aquamarine;
 }
 
+ul {
+  display: block;
+  list-style-type: none;
+  text-align: center;
+}
+
+li {
+  background-color: lightgreen;
+  margin: 5px;
+  padding-left: 20px;
+  box-shadow: black 10px;
+  z-index: 5;
+  border: solid 2px white;
+  border-radius: 5px;
+  margin-right: 40px;
+  height: 50px;
+  line-height: 50px;
+}
+
 #main-div {
   display: block;
   text-align: center;
@@ -29,7 +48,8 @@ body {
 
 .section {
   text-align: center;
-  padding: 10px;
+  /* padding: 5px; */
+  padding-bottom: 15px;
   width: 400px;
   background-color: white;
   box-shadow: black 10px;
@@ -41,4 +61,11 @@ body {
 .section-title {
   text-align: left;
   margin-left: 20px;
+}
+
+.cancel-btn {
+  padding-bottom: 5px;
+  margin-right: 10px;
+  float: right;
+  color: red;
 }
