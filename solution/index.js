@@ -48,35 +48,50 @@ function createTaskElement(text) {
 const submintToDoBtn = document.getElementById('submit-add-to-do')
 const inputToDo = document.getElementById('add-to-do-task')
 submintToDoBtn.addEventListener('click', (e) => {
-  createLocalStorage('to-Do-Data-List', inputToDo.value)
-  const toDoDataListArray = returnLocalStorageString('to-Do-Data-List')
-  submintToDoBtn.parentElement.children[1].append(
-    createTaskElement(toDoDataListArray[0])
-  )
+  if (inputToDo.value.length > 0) {
+    createLocalStorage('to-Do-Data-List', inputToDo.value)
+    const toDoDataListArray = returnLocalStorageString('to-Do-Data-List')
+    submintToDoBtn.parentElement.children[1].append(
+      createTaskElement(toDoDataListArray[0])
+    )
+  } else {
+    alert('Must Insert a Task')
+  }
 })
 
 // Function create a new In Progress element and Add it to the in-Progress-Data-List
 const submintInProgressBtn = document.getElementById('submit-add-in-progress')
 const inputInProgress = document.getElementById('add-in-progress-task')
 submintInProgressBtn.addEventListener('click', (e) => {
-  createLocalStorage('in-Progress-Data-List', inputInProgress.value)
-  const inProgressDataListArray = returnLocalStorageString(
-    'in-Progress-Data-List'
-  )
-  submintInProgressBtn.parentElement.children[1].append(
-    createTaskElement(inProgressDataListArray[0])
-  )
+  if (inputInProgress.value.length > 0) {
+    createLocalStorage('in-Progress-Data-List', inputInProgress.value)
+    const inProgressDataListArray = returnLocalStorageString(
+      'in-Progress-Data-List'
+    )
+    submintInProgressBtn.parentElement.children[1].append(
+      createTaskElement(inProgressDataListArray[0])
+    )
+  } else {
+    alert('Must Insert a Task')
+  }
 })
 
 // Function create a new done-Tasks element and Add it to the done-Tasks-Data-List
 const submintDoneTasksBtn = document.getElementById('submit-add-done')
 const inputDoneTasks = document.getElementById('add-done-task')
+
 submintDoneTasksBtn.addEventListener('click', (e) => {
-  createLocalStorage('done-Tasks-Data-List', inputDoneTasks.value)
-  const doneTaskDataListArray = returnLocalStorageString('done-Tasks-Data-List')
-  submintDoneTasksBtn.parentElement.children[1].append(
-    createTaskElement(doneTaskDataListArray[0])
-  )
+  if (inputDoneTasks.value.length > 0) {
+    createLocalStorage('done-Tasks-Data-List', inputDoneTasks.value)
+    const doneTaskDataListArray = returnLocalStorageString(
+      'done-Tasks-Data-List'
+    )
+    submintDoneTasksBtn.parentElement.children[1].append(
+      createTaskElement(doneTaskDataListArray[0])
+    )
+  } else {
+    alert('Must Insert a Task')
+  }
 })
 
 // delete an item:
@@ -134,3 +149,10 @@ function readLocalDoneTasksItems(localStorage) {
     )
   }
 }
+
+// Functionality:
+
+const allLiElements = Array.from(document.getElementsByTagName('li'))
+allLiElements.forEach((li) => {
+  li.addEventListener('click', (e) => {})
+})
