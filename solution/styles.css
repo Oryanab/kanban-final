@@ -1,0 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=PT+Sans&display=swap');
+
+body {
+  font-family: 'PT Sans', sans-serif;
+  background-color: aquamarine;
+}
+
+#main-div {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.section-divs {
+  display: grid;
+  margin: 5rem auto;
+  width: min(90% 75rem);
+  grid-auto-flow: column;
+  justify-items: center;
+  justify-content: space-evenly;
+}
+
+.section {
+  text-align: center;
+  padding: 10px;
+  background-color: white;
+  width: 400px;
+  box-shadow: black 10px;
+  z-index: 3;
+  border: solid 2px white;
+  border-radius: 5px;
+}

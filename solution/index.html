@@ -1,13 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="./index.js" defer></script>
     <link rel="stylesheet" href="./styles.css" />
-    <title>Tasks manager</title>
-</head>
-<body>
-</body>
+    <title id="page-title">Company Tasks manager</title>
+  </head>
+  <body>
+    <div id="main-div">
+      <h1>this is the main page title</h1>
+      <input id="search" placeholder="search by quary..." type="text" />
+    </div>
+
+    <div class="section-divs">
+      <div id="section-1" class="section">
+        <ul class="to-do-tasks"></ul>
+        <input id="add-to-do-task" type="text" />
+        <button id="submit-add-to-do"></button>
+      </div>
+
+      <div id="section-2" class="section">
+        <ul class="in-progress-tasks"></ul>
+        <input id="add-in-progress-task" type="text" />
+        <button id="submit-add-in-progress"></button>
+      </div>
+
+      <div id="section-3" class="section">
+        <ul class="done-tasks"></ul>
+        <input id="add-done-task" type="text" />
+        <button id="submit-add-done"></button>
+      </div>
+    </div>
+  </body>
 </html>
