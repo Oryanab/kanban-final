@@ -1,158 +1,195 @@
 'use strict'
 
-// Ignore just for not ganerating tone of errors
-const input = parseInt(document.getElementById('input').value)
-const btn = document.getElementById('btn')
+// Set up a Counter id
+function ganerateId() {
+  let randomId = Math.round(Math.random() * 5000 + 1)
+  return randomId
+}
 
-// clear all localStorage exsist
-// localStorage.clear()
+// read the exisiting local data
+function lunchLocalStorage() {
+  const localStorageJson = localStorage.getItem('tasks')
 
-// Set Up the DataLists for the first time only
+  if (!localStorageJson) {
+    const localStorageJson = localStorage.setItem(
+      'tasks',
+      JSON.stringify({
+        todo: [],
+        'in-progress': [],
+        done: [],
+      })
+    )
+  }
+
+  return JSON.parse(localStorageJson)
+}
+
+// build all the html based on the data
+function buildHtmlStructure(lunchLocalStorage) {
+  restoreToDoItems(lunchLocalStorage)
+  restoreInProgressItems(lunchLocalStorage)
+  restoreDoneItems(lunchLocalStorage)
+}
+buildHtmlStructure(lunchLocalStorage())
+
+// create the basic data lists
 const toDoDataList = []
 const inProgressDataList = []
 const doneTasksDataList = []
 
-//this function will load any exisiting data from local storage or create empty data values
-function readLocalStorageAndCreateDom(localStorage) {
-  readLocalToDoItems(localStorage)
-  readLocalInProgressItems(localStorage)
-  readLocalDoneTasksItems(localStorage)
+// Need to add every run the info to the lists:
+function backUpLocalStorage(lunchLocalStorage) {
+  try {
+    for (let todo of lunchLocalStorage.todo) {
+      toDoDataList.push(todo)
+    }
+  } catch (e) {}
+  try {
+    for (let progressTask of lunchLocalStorage['in-progress']) {
+      inProgressDataList.push(progressTask)
+    }
+  } catch (e) {}
+  try {
+    for (let doneTasks of lunchLocalStorage.done) {
+      doneTasksDataList.push(doneTasks)
+    }
+  } catch (e) {}
 }
-readLocalStorageAndCreateDom(localStorage)
+backUpLocalStorage(lunchLocalStorage())
 
-// Reverse the DataList from a string to Json get the info with JSON.parse
-function returnLocalStorageString(localStorageItem) {
-  const localStorageString = JSON.parse(localStorage[localStorageItem])
-  return localStorageString
+// add new data data
+function CreateNewJsonData(
+  toDoDataList,
+  inProgressDataList,
+  doneTasksDataList
+) {
+  const NewJsonData = {
+    todo: toDoDataList,
+    'in-progress': inProgressDataList,
+    done: doneTasksDataList,
+  }
+  return NewJsonData
 }
 
-//  add Simple item to the exsisting Data lists
-function createLocalStorage(dataKeyItem, taskToAdd) {
-  const targetDataList = returnLocalStorageString(dataKeyItem)
-  targetDataList.unshift(taskToAdd)
-  localStorage.setItem(dataKeyItem, JSON.stringify(targetDataList))
+// set the new local data
+function setLocalStorage(jsonData) {
+  localStorage.setItem('tasks', JSON.stringify(jsonData))
 }
+
+// Now We are creating the Function which will take the text inputs and Add to the basic data lists:
+// Function create a new To Do element and Add it to the to-Do-Data-List:
+const submintToDoBtn = document.getElementById('submit-add-to-do') // Button
+const inputToDo = document.getElementById('add-to-do-task') // Inputs field
+// Create new To Do element:
+submintToDoBtn.addEventListener('click', (e) => {
+  if (inputToDo.value.length > 0) {
+    toDoDataList.unshift(inputToDo.value)
+    submintToDoBtn.parentElement.children[1].prepend(
+      createTaskElement(toDoDataList[0])
+    )
+  } else {
+    alert('Must Insert a Task')
+  }
+  setLocalStorage(
+    CreateNewJsonData(toDoDataList, inProgressDataList, doneTasksDataList)
+  )
+})
+
+// Function create a new In Progress element and Add it to the in-progress
+const submintInProgressBtn = document.getElementById('submit-add-in-progress')
+const inputInProgress = document.getElementById('add-in-progress-task')
+// Create new in Progress element:
+submintInProgressBtn.addEventListener('click', (e) => {
+  if (inputInProgress.value.length > 0) {
+    inProgressDataList.unshift(inputInProgress.value)
+    submintInProgressBtn.parentElement.children[1].prepend(
+      createTaskElement(inProgressDataList[0])
+    )
+  } else {
+    alert('Must Insert a Task')
+  }
+  setLocalStorage(
+    CreateNewJsonData(toDoDataList, inProgressDataList, doneTasksDataList)
+  )
+})
+
+// Function create a new done-Tasks element and Add it to the done
+const submintDoneTasksBtn = document.getElementById('submit-add-done')
+const inputDoneTasks = document.getElementById('add-done-task')
+// Create new done element:
+submintDoneTasksBtn.addEventListener('click', (e) => {
+  if (inputDoneTasks.value.length > 0) {
+    doneTasksDataList.unshift(inputDoneTasks.value)
+    submintDoneTasksBtn.parentElement.children[1].prepend(
+      createTaskElement(doneTasksDataList[0])
+    )
+  } else {
+    alert('Must Insert a Task')
+  }
+  setLocalStorage(
+    CreateNewJsonData(toDoDataList, inProgressDataList, doneTasksDataList)
+  )
+})
+
+// // ############################## the flow of adding new items
+
+// // step 1: adding new elements to the LocalStorage:
+//__________________________________________________________
+// toDoDataList.push({ id: 1, conetent: "lalalla" });
+// inProgressDataList.push({ id: 1, conetent: "lalalla" });
+// doneTasksDataList.push({ id: 1, conetent: "lalalla" });
+//__________________________________________________________
+// // step 2: Refactoring the LocalStorage with the new data
+//__________________________________________________________
+// setLocalStorage(
+//     CreateNewJsonData(toDoDataList, inProgressDataList, doneTasksDataList)
+//   );
+//__________________________________________________________
+
+// //   step 3: Ganerating all the html stracture:
+//__________________________________________________________
+//   buildHtmlStructure(lunchLocalStorage());
+//__________________________________________________________
+
+// //   ############################## the flow of adding new items
 
 // Create the element li to add to every block
 function createTaskElement(text) {
   const newTaskElement = document.createElement('li')
+  newTaskElement.classList.add('task')
   const cancelBtn = document.createElement('span')
   cancelBtn.textContent = 'X'
   cancelBtn.classList.add('cancel-btn')
   newTaskElement.textContent = text
-  newTaskElement.appendChild(cancelBtn)
+  //   newTaskElement.appendChild(cancelBtn)
   return newTaskElement
 }
 
-// Function create a new To Do element and Add it to the to-Do-Data-List
-const submintToDoBtn = document.getElementById('submit-add-to-do')
-const inputToDo = document.getElementById('add-to-do-task')
-submintToDoBtn.addEventListener('click', (e) => {
-  if (inputToDo.value.length > 0) {
-    createLocalStorage('to-Do-Data-List', inputToDo.value)
-    const toDoDataListArray = returnLocalStorageString('to-Do-Data-List')
-    submintToDoBtn.parentElement.children[1].append(
-      createTaskElement(toDoDataListArray[0])
-    )
-  } else {
-    alert('Must Insert a Task')
-  }
-})
-
-// Function create a new In Progress element and Add it to the in-Progress-Data-List
-const submintInProgressBtn = document.getElementById('submit-add-in-progress')
-const inputInProgress = document.getElementById('add-in-progress-task')
-submintInProgressBtn.addEventListener('click', (e) => {
-  if (inputInProgress.value.length > 0) {
-    createLocalStorage('in-Progress-Data-List', inputInProgress.value)
-    const inProgressDataListArray = returnLocalStorageString(
-      'in-Progress-Data-List'
-    )
-    submintInProgressBtn.parentElement.children[1].append(
-      createTaskElement(inProgressDataListArray[0])
-    )
-  } else {
-    alert('Must Insert a Task')
-  }
-})
-
-// Function create a new done-Tasks element and Add it to the done-Tasks-Data-List
-const submintDoneTasksBtn = document.getElementById('submit-add-done')
-const inputDoneTasks = document.getElementById('add-done-task')
-
-submintDoneTasksBtn.addEventListener('click', (e) => {
-  if (inputDoneTasks.value.length > 0) {
-    createLocalStorage('done-Tasks-Data-List', inputDoneTasks.value)
-    const doneTaskDataListArray = returnLocalStorageString(
-      'done-Tasks-Data-List'
-    )
-    submintDoneTasksBtn.parentElement.children[1].append(
-      createTaskElement(doneTaskDataListArray[0])
-    )
-  } else {
-    alert('Must Insert a Task')
-  }
-})
-
-// delete an item:
-// btn.addEventListener('click', (e) => {
-//   todos.splice(input, 1)
-//   console.log(todos)
-//   setLocalStorage()
-// })
-
 // this function will read any exisiting To-Do-Items on the local storage or
 // create the list if it fails to read
-function readLocalToDoItems(localStorage) {
+function restoreToDoItems(lunchLocalStorage) {
   const toDoUlSection = document.querySelector('.to-do-tasks')
   try {
-    for (let toDoItem of returnLocalStorageString('to-Do-Data-List')) {
+    for (let toDoItem of lunchLocalStorage.todo) {
       toDoUlSection.append(createTaskElement(toDoItem))
     }
-  } catch (e) {
-    localStorage.setItem('to-Do-Data-List', JSON.stringify(toDoDataList))
-  }
+  } catch (e) {}
 }
 
-// this function will read any exisiting in-Progress-Items on the local storage or
-// create the list if it fails to read
-function readLocalInProgressItems(localStorage) {
+function restoreInProgressItems(lunchLocalStorage) {
   const inProgressUlSection = document.querySelector('.in-progress-tasks')
   try {
-    for (let inProgressItem of returnLocalStorageString(
-      'in-Progress-Data-List'
-    )) {
+    for (let inProgressItem of lunchLocalStorage['in-progress']) {
       inProgressUlSection.append(createTaskElement(inProgressItem))
     }
-  } catch (e) {
-    localStorage.setItem(
-      'in-Progress-Data-List',
-      JSON.stringify(inProgressDataList)
-    )
-  }
+  } catch (e) {}
 }
 
-// this function will read any exisiting done-Task on the local storage or
-// create the list if it fails to read
-function readLocalDoneTasksItems(localStorage) {
+function restoreDoneItems(lunchLocalStorage) {
   const doneTasksUlSection = document.querySelector('.done-tasks')
   try {
-    for (let doneTasksItem of returnLocalStorageString(
-      'done-Tasks-Data-List'
-    )) {
-      doneTasksUlSection.append(createTaskElement(doneTasksItem))
+    for (let doneItem of lunchLocalStorage.done) {
+      doneTasksUlSection.append(createTaskElement(doneItem))
     }
-  } catch (e) {
-    localStorage.setItem(
-      'done-Tasks-Data-List',
-      JSON.stringify(doneTasksDataList)
-    )
-  }
+  } catch (e) {}
 }
-
-// Functionality:
-
-const allLiElements = Array.from(document.getElementsByTagName('li'))
-allLiElements.forEach((li) => {
-  li.addEventListener('click', (e) => {})
-})
