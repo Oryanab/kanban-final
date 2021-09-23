@@ -193,3 +193,96 @@ function restoreDoneItems(lunchLocalStorage) {
     }
   } catch (e) {}
 }
+
+//User should be able to move tasks with alt + numbers and the new lists data should be saved to local storage (79 ms)
+
+const allLi = Array.from(document.querySelectorAll('.task'))
+allLi.forEach((item) => {
+  item.addEventListener('mouseover', (e) => {
+    item.style.backgroundColor = 'pink'
+    document.addEventListener(
+      'keydown',
+      (f) => {
+        if (e.altKey === true && f.keyCode === 49) {
+          altNumberRemove(
+            e.target.parentElement.classList[0],
+            e.target.textContent
+          )
+          e.target.remove()
+          altNumberToDoAdd(e.target.textContent)
+          e.stopImmediatePropagation()
+        } else if (e.altKey === true && f.keyCode === 50) {
+          altNumberRemove(
+            e.target.parentElement.classList[0],
+            e.target.textContent
+          )
+          e.target.remove()
+          altNumberInProgressAdd(e.target.textContent)
+          e.stopImmediatePropagation()
+        } else if (e.altKey === true && f.keyCode === 51) {
+          altNumberRemove(
+            e.target.parentElement.classList[0],
+            e.target.textContent
+          )
+          e.target.remove()
+          altNumberDoneTaskAdd(e.target.textContent)
+          e.stopImmediatePropagation()
+        }
+        f.stopPropagation()
+      },
+      { once: true }
+    )
+  })
+})
+
+function altNumberToDoAdd(text) {
+  const toDoUlSection = document.querySelector('.to-do-tasks')
+  toDoDataList.unshift(text)
+  toDoUlSection.append(createTaskElement(toDoDataList[0]))
+  setLocalStorage(
+    CreateNewJsonData(toDoDataList, inProgressDataList, doneTasksDataList)
+  )
+}
+
+function altNumberInProgressAdd(text) {
+  const inProgressUlSection = document.querySelector('.in-progress-tasks')
+  inProgressDataList.unshift(text)
+  inProgressUlSection.append(createTaskElement(inProgressDataList[0]))
+  setLocalStorage(
+    CreateNewJsonData(toDoDataList, inProgressDataList, doneTasksDataList)
+  )
+}
+
+function altNumberDoneTaskAdd(text) {
+  const doneTasksUlSection = document.querySelector('.done-tasks')
+  doneTasksDataList.unshift(text)
+  doneTasksUlSection.append(createTaskElement(doneTasksDataList[0]))
+  setLocalStorage(
+    CreateNewJsonData(toDoDataList, inProgressDataList, doneTasksDataList)
+  )
+}
+
+function altNumberRemove(dataClassName, text) {
+  returnDataListByName(dataClassName).splice(
+    returnDataListByName(dataClassName).indexOf(text),
+    1
+  )
+  setLocalStorage(
+    CreateNewJsonData(toDoDataList, inProgressDataList, doneTasksDataList)
+  )
+}
+
+function returnDataListByName(dataClassName) {
+  if (dataClassName === 'to-do-tasks') {
+    return toDoDataList
+  } else if (dataClassName === 'in-progress-tasks') {
+    return inProgressDataList
+  } else {
+    return doneTasksDataList
+  }
+}
+
+// altNumberRemove(
+//   e.target.parentElement.classList[0] this is already the name,
+//   e.target.textContent
+// )
