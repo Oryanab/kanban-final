@@ -161,6 +161,19 @@ function createTaskElement(text) {
   cancelBtn.textContent = 'X'
   cancelBtn.classList.add('cancel-btn')
   newTaskElement.textContent = text
+
+  // this function will add a dubble click event to each item with class Tags, then will enable content editing for the li, then it will add another event - Blur turn on the spliceDataList Method
+  newTaskElement.addEventListener('dblclick', (allowContentEdit) => {
+    const currentText = newTaskElement.textContent
+    newTaskElement.contentEditable = 'true'
+    newTaskElement.addEventListener('blur', (saveEdits) => {
+      spliceDataList(
+        allowContentEdit.target.parentElement.classList[0],
+        currentText,
+        newTaskElement.textContent
+      )
+    })
+  })
   //   newTaskElement.appendChild(cancelBtn)
   return newTaskElement
 }
@@ -239,7 +252,7 @@ document.addEventListener('keydown', (hoverTaskEvent) => {
 function altNumberToDoAdd(text) {
   const toDoUlSection = document.querySelector('.to-do-tasks')
   toDoDataList.unshift(text)
-  toDoUlSection.append(createTaskElement(toDoDataList[0]))
+  toDoUlSection.prepend(createTaskElement(toDoDataList[0]))
   setLocalStorage(
     CreateNewJsonData(toDoDataList, inProgressDataList, doneTasksDataList)
   )
@@ -249,7 +262,7 @@ function altNumberToDoAdd(text) {
 function altNumberInProgressAdd(text) {
   const inProgressUlSection = document.querySelector('.in-progress-tasks')
   inProgressDataList.unshift(text)
-  inProgressUlSection.append(createTaskElement(inProgressDataList[0]))
+  inProgressUlSection.prepend(createTaskElement(inProgressDataList[0]))
   setLocalStorage(
     CreateNewJsonData(toDoDataList, inProgressDataList, doneTasksDataList)
   )
@@ -259,7 +272,7 @@ function altNumberInProgressAdd(text) {
 function altNumberDoneTaskAdd(text) {
   const doneTasksUlSection = document.querySelector('.done-tasks')
   doneTasksDataList.unshift(text)
-  doneTasksUlSection.append(createTaskElement(doneTasksDataList[0]))
+  doneTasksUlSection.prepend(createTaskElement(doneTasksDataList[0]))
   setLocalStorage(
     CreateNewJsonData(toDoDataList, inProgressDataList, doneTasksDataList)
   )
@@ -276,6 +289,7 @@ function altNumberRemove(dataClassName, text) {
   )
 }
 
+// this function will receive the element class name and return its datalist
 function returnDataListByName(dataClassName) {
   if (dataClassName === 'to-do-tasks') {
     return toDoDataList
@@ -286,22 +300,21 @@ function returnDataListByName(dataClassName) {
   }
 }
 
-//User should be able to edit task with double click and the new task data will be saved in the local storage (2425 ms)
+// Array.from(document.querySelectorAll('.task')).forEach((liItem) => {
+//   liItem.addEventListener('dblclick', (allowContentEdit) => {
+//     const currentText = liItem.textContent
+//     liItem.contentEditable = 'true'
+//     liItem.addEventListener('blur', (saveEdits) => {
+//       spliceDataList(
+//         allowContentEdit.target.parentElement.classList[0],
+//         currentText,
+//         liItem.textContent
+//       )
+//     })
+//   })
+// })
 
-Array.from(document.querySelectorAll('.task')).forEach((liItem) => {
-  liItem.addEventListener('dblclick', (allowContentEdit) => {
-    const currentText = liItem.textContent
-    liItem.contentEditable = 'true'
-    liItem.addEventListener('blur', (saveEdits) => {
-      spliceDataList(
-        allowContentEdit.target.parentElement.classList[0],
-        currentText,
-        liItem.textContent
-      )
-    })
-  })
-})
-
+// User Double Click Contribute - this function save the changes by entering the dataList and splice out the previous text and add back the new text in the same location.
 function spliceDataList(dataClassName, previousText, newText) {
   returnDataListByName(dataClassName).splice(
     returnDataListByName(dataClassName).indexOf(previousText),
@@ -312,3 +325,39 @@ function spliceDataList(dataClassName, previousText, newText) {
     CreateNewJsonData(toDoDataList, inProgressDataList, doneTasksDataList)
   )
 }
+
+/*
+User should be able to search between tasks (910 ms)
+*/
+
+function displayElementsByQuary() {
+  const quaryInputField = document.getElementById('search')
+  const toDoUlSection = document.querySelector('.to-do-tasks')
+  const inProgressUlSection = document.querySelector('.in-progress-tasks')
+  const doneTasksUlSection = document.querySelector('.done-tasks')
+
+  quaryInputField.addEventListener('keyup', (e) => {
+    Array.from(toDoUlSection.children).filter((item) => {
+      if (!item.textContent.includes(e.target.value)) {
+        item.style.display = 'none'
+      } else {
+        item.style.display = 'block'
+      }
+    })
+    Array.from(inProgressUlSection.children).filter((item) => {
+      if (!item.textContent.includes(e.target.value)) {
+        item.style.display = 'none'
+      } else {
+        item.style.display = 'block'
+      }
+    })
+    Array.from(doneTasksUlSection.children).filter((item) => {
+      if (!item.textContent.includes(e.target.value)) {
+        item.style.display = 'none'
+      } else {
+        item.style.display = 'block'
+      }
+    })
+  })
+}
+displayElementsByQuary()
