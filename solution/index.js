@@ -164,7 +164,7 @@ function createTaskElement(text) {
   //   newTaskElement.appendChild(cancelBtn)
   return newTaskElement
 }
-
+//###########################################################################
 // this function will read any exisiting To-Do-Items on the local storage or
 // create the list if it fails to read
 function restoreToDoItems(lunchLocalStorage) {
@@ -193,48 +193,49 @@ function restoreDoneItems(lunchLocalStorage) {
     }
   } catch (e) {}
 }
+//###########################################################################
 
 //User should be able to move tasks with alt + numbers and the new lists data should be saved to local storage (79 ms)
-
-const allLi = Array.from(document.querySelectorAll('.task'))
-allLi.forEach((item) => {
-  item.addEventListener('mouseover', (e) => {
-    item.style.backgroundColor = 'pink'
-    document.addEventListener(
-      'keydown',
-      (f) => {
-        if (e.altKey === true && f.keyCode === 49) {
-          altNumberRemove(
-            e.target.parentElement.classList[0],
-            e.target.textContent
-          )
-          e.target.remove()
-          altNumberToDoAdd(e.target.textContent)
-          e.stopImmediatePropagation()
-        } else if (e.altKey === true && f.keyCode === 50) {
-          altNumberRemove(
-            e.target.parentElement.classList[0],
-            e.target.textContent
-          )
-          e.target.remove()
-          altNumberInProgressAdd(e.target.textContent)
-          e.stopImmediatePropagation()
-        } else if (e.altKey === true && f.keyCode === 51) {
-          altNumberRemove(
-            e.target.parentElement.classList[0],
-            e.target.textContent
-          )
-          e.target.remove()
-          altNumberDoneTaskAdd(e.target.textContent)
-          e.stopImmediatePropagation()
-        }
-        f.stopPropagation()
-      },
-      { once: true }
-    )
-  })
+document.addEventListener('keydown', (hoverTaskEvent) => {
+  //#########################################
+  const allHoveredItems = Array.from(document.querySelectorAll(':hover'))
+  const allTaskItems = Array.from(document.getElementsByClassName('task'))
+  if (hoverTaskEvent.altKey && hoverTaskEvent.keyCode === 49) {
+    allTaskItems.forEach((currentTask) => {
+      if (allHoveredItems[allHoveredItems.length - 1] === currentTask) {
+        altNumberRemove(
+          currentTask.parentElement.classList[0],
+          currentTask.textContent
+        )
+        currentTask.remove()
+        altNumberToDoAdd(currentTask.textContent)
+      }
+    })
+  } else if (hoverTaskEvent.altKey && hoverTaskEvent.keyCode === 50) {
+    allTaskItems.forEach((currentTask) => {
+      if (allHoveredItems[allHoveredItems.length - 1] === currentTask) {
+        altNumberRemove(
+          currentTask.parentElement.classList[0],
+          currentTask.textContent
+        )
+        currentTask.remove()
+        altNumberInProgressAdd(currentTask.textContent)
+      }
+    })
+  } else if (hoverTaskEvent.altKey && hoverTaskEvent.keyCode === 51) {
+    allTaskItems.forEach((currentTask) => {
+      if (allHoveredItems[allHoveredItems.length - 1] === currentTask) {
+        altNumberRemove(
+          currentTask.parentElement.classList[0],
+          currentTask.textContent
+        )
+        currentTask.remove()
+        altNumberDoneTaskAdd(currentTask.textContent)
+      }
+    })
+  }
 })
-
+// this function will get the text of the element being hovered and create and store an element
 function altNumberToDoAdd(text) {
   const toDoUlSection = document.querySelector('.to-do-tasks')
   toDoDataList.unshift(text)
@@ -244,6 +245,7 @@ function altNumberToDoAdd(text) {
   )
 }
 
+// this function will get the text of the element being hovered and create and store an element
 function altNumberInProgressAdd(text) {
   const inProgressUlSection = document.querySelector('.in-progress-tasks')
   inProgressDataList.unshift(text)
@@ -253,6 +255,7 @@ function altNumberInProgressAdd(text) {
   )
 }
 
+// this function will get the text of the element being hovered and create and store an element
 function altNumberDoneTaskAdd(text) {
   const doneTasksUlSection = document.querySelector('.done-tasks')
   doneTasksDataList.unshift(text)
@@ -262,6 +265,7 @@ function altNumberDoneTaskAdd(text) {
   )
 }
 
+// this function will remove the element which has moved from the LocalStorage
 function altNumberRemove(dataClassName, text) {
   returnDataListByName(dataClassName).splice(
     returnDataListByName(dataClassName).indexOf(text),
@@ -282,7 +286,29 @@ function returnDataListByName(dataClassName) {
   }
 }
 
-// altNumberRemove(
-//   e.target.parentElement.classList[0] this is already the name,
-//   e.target.textContent
-// )
+//User should be able to edit task with double click and the new task data will be saved in the local storage (2425 ms)
+
+Array.from(document.querySelectorAll('.task')).forEach((liItem) => {
+  liItem.addEventListener('dblclick', (allowContentEdit) => {
+    const currentText = liItem.textContent
+    liItem.contentEditable = 'true'
+    liItem.addEventListener('blur', (saveEdits) => {
+      spliceDataList(
+        allowContentEdit.target.parentElement.classList[0],
+        currentText,
+        liItem.textContent
+      )
+    })
+  })
+})
+
+function spliceDataList(dataClassName, previousText, newText) {
+  returnDataListByName(dataClassName).splice(
+    returnDataListByName(dataClassName).indexOf(previousText),
+    1,
+    newText
+  )
+  setLocalStorage(
+    CreateNewJsonData(toDoDataList, inProgressDataList, doneTasksDataList)
+  )
+}
