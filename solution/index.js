@@ -361,3 +361,98 @@ function displayElementsByQuary() {
   })
 }
 displayElementsByQuary()
+
+/*
+ skipped User should be able to save and load their tasks from the api and save it to the local storage
+*/
+function loadDataFromApi() {
+  const toDoDataListNew = []
+  const inProgressDataListNew = []
+  const doneTasksDataListNew = []
+  const load = document.getElementById('load-btn')
+  load.addEventListener('click', async (loadApiData) => {
+    removeAllTasks()
+    const response = await fetch(
+      'https://json-bins.herokuapp.com/bin/614b12c84021ac0e6c080ce1'
+    )
+
+    const apiJsonData = await response.json()
+    apiJsonData.tasks.todo.forEach((toDoApiItem) => {
+      try {
+        toDoDataListNew.push(toDoApiItem)
+        const toDoUlSection = document.querySelector('.to-do-tasks')
+        toDoUlSection.prepend(createTaskElement(toDoApiItem))
+      } catch (e) {}
+    })
+    apiJsonData.tasks['in-progress'].forEach((inProgressApiItem) => {
+      try {
+        inProgressDataListNew.push(inProgressApiItem)
+        const inProgressUlSection = document.querySelector('.in-progress-tasks')
+        inProgressUlSection.prepend(createTaskElement(inProgressApiItem))
+      } catch (e) {}
+    })
+    apiJsonData.tasks.done.forEach((doneTaskApiItem) => {
+      try {
+        doneTasksDataListNew.push(doneTaskApiItem)
+        const doneTasksUlSection = document.querySelector('.done-tasks')
+        doneTasksUlSection.prepend(createTaskElement(doneTaskApiItem))
+      } catch (e) {}
+    })
+
+    setLocalStorage(
+      CreateNewJsonData(
+        toDoDataListNew,
+        inProgressDataListNew,
+        doneTasksDataListNew
+      )
+    )
+  })
+}
+
+loadDataFromApi()
+
+/*
+ User should be save tasks from the api
+*/
+
+function saveDataToApi() {
+  const save = document.getElementById('save-btn')
+  save.addEventListener('click', async (saveToApiData) => {
+    const response = await fetch(
+      'https://json-bins.herokuapp.com/bin/614b12c84021ac0e6c080ce1',
+      {
+        method: 'put',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          tasks: {
+            todo: lunchLocalStorage().todo,
+            'in-progress': lunchLocalStorage()['in-progress'],
+            done: lunchLocalStorage().done,
+          },
+        }),
+      }
+    )
+
+    if (!response.ok) {
+      alert(
+        'Sorry there may have been an error saving the data pls try again, Error Status: ' +
+          response.statusText
+      )
+    } else {
+      alert('sucess')
+    }
+
+    // return await response.json()
+  })
+}
+saveDataToApi()
+
+/// if you get here all thats left to delet is the new lists
+function removeAllTasks() {
+  Array.from(document.querySelectorAll('.task')).forEach((task) => {
+    task.remove()
+  })
+}
