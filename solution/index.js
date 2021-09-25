@@ -407,6 +407,7 @@ function loadDataFromApi() {
       CreateNewJsonData(toDoDataList, inProgressDataList, doneTasksDataList)
     )
     removeLoader()
+    location.reload()
   })
 }
 
