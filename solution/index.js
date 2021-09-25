@@ -500,25 +500,27 @@ tasks.forEach((task) => {
   })
   task.addEventListener('dragend', (e) => {
     task.classList.remove('dragging')
-    if (task.parentElement.classList[0] === 'to-do-tasks') {
-      const toDoUlSection = document.querySelector('.to-do-tasks')
-      toDoDataList.unshift(task.textContent)
-      setLocalStorage(
-        CreateNewJsonData(toDoDataList, inProgressDataList, doneTasksDataList)
-      )
-    } else if (task.parentElement.classList[0] === 'in-progress-tasks') {
-      const inProgressUlSection = document.querySelector('.in-progress-tasks')
-      inProgressDataList.unshift(task.textContent)
-      setLocalStorage(
-        CreateNewJsonData(toDoDataList, inProgressDataList, doneTasksDataList)
-      )
-    } else {
-      const doneTasksUlSection = document.querySelector('.done-tasks')
-      doneTasksDataList.unshift(task.textContent)
-      setLocalStorage(
-        CreateNewJsonData(toDoDataList, inProgressDataList, doneTasksDataList)
-      )
-    }
+    try {
+      if (task.parentElement.classList[0] === 'to-do-tasks') {
+        const toDoUlSection = document.querySelector('.to-do-tasks')
+        toDoDataList.unshift(task.textContent)
+        setLocalStorage(
+          CreateNewJsonData(toDoDataList, inProgressDataList, doneTasksDataList)
+        )
+      } else if (task.parentElement.classList[0] === 'in-progress-tasks') {
+        const inProgressUlSection = document.querySelector('.in-progress-tasks')
+        inProgressDataList.unshift(task.textContent)
+        setLocalStorage(
+          CreateNewJsonData(toDoDataList, inProgressDataList, doneTasksDataList)
+        )
+      } else {
+        const doneTasksUlSection = document.querySelector('.done-tasks')
+        doneTasksDataList.unshift(task.textContent)
+        setLocalStorage(
+          CreateNewJsonData(toDoDataList, inProgressDataList, doneTasksDataList)
+        )
+      }
+    } catch (e) {}
   })
 })
 
@@ -530,8 +532,16 @@ containers.forEach((container) => {
     // console.log(afterElement)
     if (afterElement === null) {
       container.append(task)
+    } else if (container.id === 'trush') {
+      try {
+        task.remove()
+      } catch (e) {}
     } else {
-      container.insertBefore(task, afterElement)
+      try {
+        container.insertBefore(task, afterElement)
+      } catch (e) {
+        alert('Cant Add Deleted Items')
+      }
     }
   })
 })
