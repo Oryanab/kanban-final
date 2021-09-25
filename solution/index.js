@@ -93,6 +93,7 @@ submintToDoBtn.addEventListener('click', (e) => {
   setLocalStorage(
     CreateNewJsonData(toDoDataList, inProgressDataList, doneTasksDataList)
   )
+  inputToDo.value = ''
 })
 
 // Function create a new In Progress element and Add it to the in-progress
@@ -111,6 +112,7 @@ submintInProgressBtn.addEventListener('click', (e) => {
   setLocalStorage(
     CreateNewJsonData(toDoDataList, inProgressDataList, doneTasksDataList)
   )
+  inputInProgress.value = ''
 })
 
 // Function create a new done-Tasks element and Add it to the done
@@ -129,6 +131,7 @@ submintDoneTasksBtn.addEventListener('click', (e) => {
   setLocalStorage(
     CreateNewJsonData(toDoDataList, inProgressDataList, doneTasksDataList)
   )
+  inputDoneTasks.value = ''
 })
 
 // // ############################## the flow of adding new items
@@ -157,9 +160,6 @@ submintDoneTasksBtn.addEventListener('click', (e) => {
 function createTaskElement(text) {
   const newTaskElement = document.createElement('li')
   newTaskElement.classList.add('task')
-  const cancelBtn = document.createElement('span')
-  cancelBtn.textContent = 'X'
-  cancelBtn.classList.add('cancel-btn')
   newTaskElement.textContent = text
   // add draggable feature for the draf&drop feature
   newTaskElement.setAttribute('draggable', 'true')
@@ -175,7 +175,7 @@ function createTaskElement(text) {
       )
     })
   })
-  //   newTaskElement.appendChild(cancelBtn)
+
   return newTaskElement
 }
 //###########################################################################
