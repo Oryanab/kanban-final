@@ -161,7 +161,8 @@ function createTaskElement(text) {
   cancelBtn.textContent = 'X'
   cancelBtn.classList.add('cancel-btn')
   newTaskElement.textContent = text
-
+  // add draggable feature for the draf&drop feature
+  newTaskElement.setAttribute('draggable', 'true')
   // this function will add a dubble click event to each item with class Tags, then will enable content editing for the li, then it will add another event - Blur turn on the spliceDataList Method
   newTaskElement.addEventListener('dblclick', (allowContentEdit) => {
     const currentText = newTaskElement.textContent
@@ -477,4 +478,76 @@ function createLoader() {
 function removeLoader() {
   const loaderRemove = document.getElementById('loader')
   loaderRemove.remove()
+}
+
+/*
+ Implement drag-and-drop sorting of tasks.
+  Implement drag-and-drop sorting of tasks.
+   Implement drag-and-drop sorting of tasks.
+    Implement drag-and-drop sorting of tasks.
+     Implement drag-and-drop sorting of tasks.
+*/
+// every element has a class task
+const tasks = document.querySelectorAll('.task')
+// every container is a ul
+const containers = document.querySelectorAll('ul')
+
+tasks.forEach((task) => {
+  task.addEventListener('dragstart', (e) => {
+    task.classList.add('dragging')
+    altNumberRemove(task.parentElement.classList[0], task.textContent)
+  })
+  task.addEventListener('dragend', (e) => {
+    task.classList.remove('dragging')
+    if (task.parentElement.classList[0] === 'to-do-tasks') {
+      const toDoUlSection = document.querySelector('.to-do-tasks')
+      toDoDataList.unshift(task.textContent)
+      setLocalStorage(
+        CreateNewJsonData(toDoDataList, inProgressDataList, doneTasksDataList)
+      )
+    } else if (task.parentElement.classList[0] === 'in-progress-tasks') {
+      const inProgressUlSection = document.querySelector('.in-progress-tasks')
+      inProgressDataList.unshift(task.textContent)
+      setLocalStorage(
+        CreateNewJsonData(toDoDataList, inProgressDataList, doneTasksDataList)
+      )
+    } else {
+      const doneTasksUlSection = document.querySelector('.done-tasks')
+      doneTasksDataList.unshift(task.textContent)
+      setLocalStorage(
+        CreateNewJsonData(toDoDataList, inProgressDataList, doneTasksDataList)
+      )
+    }
+  })
+})
+
+containers.forEach((container) => {
+  container.addEventListener('dragover', (e) => {
+    e.preventDefault()
+    const task = document.querySelector('.dragging')
+    const afterElement = getDragAfterElement(container, e.clientY)
+    // console.log(afterElement)
+    if (afterElement === null) {
+      container.append(task)
+    } else {
+      container.insertBefore(task, afterElement)
+    }
+  })
+})
+
+function getDragAfterElement(container, y) {
+  const taskElements = [...container.querySelectorAll('.task:not(.dragging)')]
+
+  return taskElements.reduce(
+    (closest, child) => {
+      const box = child.getBoundingClientRect()
+      const offset = y - box.top - box.height / 2
+      if (offset < 0 && offset > closest.offset) {
+        return { offset: offset, element: child }
+      } else {
+        return closest
+      }
+    },
+    { offset: Number.NEGATIVE_INFINITY }
+  ).element
 }

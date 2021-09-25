@@ -9,6 +9,7 @@ ul {
   display: block;
   list-style-type: none;
   text-align: center;
+  padding-bottom: 2rem;
 }
 
 li {
@@ -97,4 +98,11 @@ li {
     opacity: 0;
     visibility: hidden;
   }
+}
+
+.task {
+  cursor: pointer;
+}
+.task.dragging {
+  opacity: 0.5;
 }
