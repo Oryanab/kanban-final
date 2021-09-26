@@ -1,7 +1,7 @@
 'use strict'
 
 /*
-    Aim (lunchLocalStorage): read the exisiting local data and return it
+    Aim (lunchLocalStorage): read all the exisiting local data and return it
 */
 function lunchLocalStorage() {
   const localStorageJson = localStorage.getItem('tasks')
