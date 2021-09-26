@@ -244,7 +244,9 @@ document.addEventListener('keydown', (hoverTaskEvent) => {
   }
 })
 
-// this function will get the text of the element being hovered and create and store an element
+/*
+    Aim (altNumberToDoAdd, altNumberInProgressAdd, altNumberDoneTaskAdd): Functions will receive the element which was passed textContent and add its to the begining of the New Section's Data List, then it will also create a new Task Element of that textContent and add it to the beginning of the Section. Then it will save the changes of the Data Lists to the Local Storage using setLocalStorage.
+*/
 function altNumberToDoAdd(text) {
   const toDoUlSection = document.querySelector('.to-do-tasks')
   toDoDataList.unshift(text)
@@ -253,8 +255,6 @@ function altNumberToDoAdd(text) {
     CreateNewJsonData(toDoDataList, inProgressDataList, doneTasksDataList)
   )
 }
-
-// this function will get the text of the element being hovered and create and store an element
 function altNumberInProgressAdd(text) {
   const inProgressUlSection = document.querySelector('.in-progress-tasks')
   inProgressDataList.unshift(text)
@@ -263,8 +263,6 @@ function altNumberInProgressAdd(text) {
     CreateNewJsonData(toDoDataList, inProgressDataList, doneTasksDataList)
   )
 }
-
-// this function will get the text of the element being hovered and create and store an element
 function altNumberDoneTaskAdd(text) {
   const doneTasksUlSection = document.querySelector('.done-tasks')
   doneTasksDataList.unshift(text)
@@ -273,8 +271,10 @@ function altNumberDoneTaskAdd(text) {
     CreateNewJsonData(toDoDataList, inProgressDataList, doneTasksDataList)
   )
 }
+/*
+    Aim (altNumberRemove, returnDataListByName): The returnDataListByName will receive a Data-Class-Name which a name-code to the class of each Ul section, the that it set a condition and relate the Data-Class-Name to section Data List. The altNumberRemove Function will receive two inputs the Data-Class-Name which will run into returnDataListByName, and text which is the textContent of the task element which has moved. By using the Splice Method the returnDataListByName cuts out the task element which has moved by the index of its textContent and then saves the changes of the Data Lists by the function setLocalStorage.
+*/
 
-// this function will remove the element which has moved from the LocalStorage
 function altNumberRemove(dataClassName, text) {
   returnDataListByName(dataClassName).splice(
     returnDataListByName(dataClassName).indexOf(text),
@@ -284,8 +284,6 @@ function altNumberRemove(dataClassName, text) {
     CreateNewJsonData(toDoDataList, inProgressDataList, doneTasksDataList)
   )
 }
-
-// this function will receive the element class name and return its datalist
 function returnDataListByName(dataClassName) {
   if (dataClassName === 'to-do-tasks') {
     return toDoDataList
@@ -296,21 +294,9 @@ function returnDataListByName(dataClassName) {
   }
 }
 
-// Array.from(document.querySelectorAll('.task')).forEach((liItem) => {
-//   liItem.addEventListener('dblclick', (allowContentEdit) => {
-//     const currentText = liItem.textContent
-//     liItem.contentEditable = 'true'
-//     liItem.addEventListener('blur', (saveEdits) => {
-//       spliceDataList(
-//         allowContentEdit.target.parentElement.classList[0],
-//         currentText,
-//         liItem.textContent
-//       )
-//     })
-//   })
-// })
-
-// User Double Click Contribute - this function save the changes by entering the dataList and splice out the previous text and add back the new text in the same location.
+/*
+    Aim (spliceDataList): This function Contribute the User Double Click Contribute, saving the changes by entering the Data List of the current Edited Task Element and splice out the previous text and add back the new text in the same location.
+*/
 function spliceDataList(dataClassName, previousText, newText) {
   returnDataListByName(dataClassName).splice(
     returnDataListByName(dataClassName).indexOf(previousText),
@@ -323,9 +309,8 @@ function spliceDataList(dataClassName, previousText, newText) {
 }
 
 /*
-User should be able to search between tasks (910 ms)
+    Aim (displayElementsByQuary): This function used for the 'User should be able to search between tasks', The function takes the value from the input field with an event 'keyup' then checks whether the current Ul.childeren (tasks of each parent Section) includes the value(search key word), if so they will be shown, else, they with disappaer by display none. The function is always active and should be called right at the bottom after the function.
 */
-
 function displayElementsByQuary() {
   const quaryInputField = document.getElementById('search')
   const toDoUlSection = document.querySelector('.to-do-tasks')
@@ -359,7 +344,7 @@ function displayElementsByQuary() {
 displayElementsByQuary()
 
 /*
- skipped User should be able to save and load their tasks from the api and save it to the local storage
+ Aim (loadDataFromApi): This function used for the 'User should be able to save and load their tasks from the api and save it to the local storage' When the load button gets clicked the fucntion will send a get request to the api, All the Current Data List will be reset by Array.length = 0, then the function will get from the response Json Setions (todo, 'in-progress' & done) the api data and restore it into the Data Lists which will be saved into the localStorage by setLocalStorage function. In case the response Json from the api empty of data, the fucntion will catch the error and pass. while awaiting for the api response, there will be a loader and at the end a short success message. The function is always active and should be called right at the bottom after the function.
 */
 function loadDataFromApi() {
   const load = document.getElementById('load-btn')
@@ -379,7 +364,6 @@ function loadDataFromApi() {
         toDoDataList.push(toDoApiItem)
         const toDoUlSection = document.querySelector('.to-do-tasks')
         toDoUlSection.appendChild(createTaskElement(toDoApiItem))
-        console.log(toDoDataList)
       } catch (e) {}
     })
     apiJsonData.tasks['in-progress'].forEach((inProgressApiItem) => {
@@ -410,9 +394,8 @@ function loadDataFromApi() {
 loadDataFromApi()
 
 /*
- User should be save tasks from the api
+ Aim (saveDataToApi): This function used for the 'User should be save tasks from the api' When the save button gets clicked the fucntion will send a post request to the api, the post request will include the current localStorage state using the function lunchLocalStorage() which continiously holders the current state of the localStorage. By clicking save it will change the Api Data to the current state of the localStorage, when the request fails an Error massage Box will be shown, otherwise, a success massage Box will be shown. The function is always active and should be called right at the bottom after the function.
 */
-
 function saveDataToApi() {
   const save = document.getElementById('save-btn')
   save.addEventListener('click', async (saveToApiData) => {
@@ -442,19 +425,22 @@ function saveDataToApi() {
       removeLoader()
       lunchSuccessMessageBox()
     }
-
-    // return await response.json()
   })
 }
 saveDataToApi()
 
-/// if you get here all thats left to delet is the new lists
+/*
+    Aim (removeAllTasks): This function used on the start of the loadDataFromApi function, the function will select all the elements with a class task and remove them from the page.
+*/
 function removeAllTasks() {
   Array.from(document.querySelectorAll('.task')).forEach((task) => {
     task.remove()
   })
 }
 
+/*
+    Aim (createLoader, removeLoader): Those function resposible for the loader used during the api requests operations save(put) and load(get), on a save or load button click the loader will be lunched and end after the request was complete.
+*/
 function createLoader() {
   const loading = document.createElement('div')
   loading.setAttribute('id', 'loader')
@@ -476,17 +462,10 @@ function removeLoader() {
 }
 
 /*
- Implement drag-and-drop sorting of tasks.
-  Implement drag-and-drop sorting of tasks.
-   Implement drag-and-drop sorting of tasks.
-    Implement drag-and-drop sorting of tasks.
-     Implement drag-and-drop sorting of tasks.
+    Aim (dragDrop: Implement drag-and-drop sorting of tasks): The drag and drop Fuctionality implemented on every task element during its creation.  dragDrop will receive a task element as an input and give it an event 'dragstart', during that event it will be added a class 'dragging', and the task element will be removed from its current Data List by using the altNumberRemove function. when drag is over the task element will receive an event 'dragend', then the class 'dragging' will be removed, and then function will run a check on its new Parent element (Ul container) and add it to the new Data List, the Save to localStorage with the setLocalStorage Function.
 */
-// every element has a class task
 const tasks = document.querySelectorAll('.task')
-// every container is a ul
 const containers = document.querySelectorAll('ul')
-
 function dragDrop(task) {
   task.addEventListener('dragstart', (e) => {
     task.classList.add('dragging')
@@ -518,13 +497,16 @@ function dragDrop(task) {
   })
 }
 
+/*
+    Aim (containers Event, getDragAfterElement(Implement drag-and-drop sorting of tasks)): Each container will get an event 'dragover', the getDragAfterElement Function will receive two inputs (container, y), the container will be each one of the containers (Ul) on the document, the y will be the clientY of the current container which the task passed to, then it will target inside the container all the task element which currenly not being drag by quary selector ('.task:not(.dragging)'), then it will make a reduce function on the currenly not being drag elements. calculate their current average (box highet and width ) and reduce it from the current container clientY into a variable called offset, then checks if the offest is negative which means its under another task element and greater than the closest task element offset (the task element which currently below), then return the task element which above the element currently being dragged. if there is not a task element above it will return the closet element (the element blow). 
+    Then during the 'dragover' event a veriable called afterElement gets the value of the element which is above the element which currently being dragged, then check if its equal to null, it will append it, if the container id is trush it will remove the task, else its insert the task Before the element below (afterElement).
+    
+*/
 containers.forEach((container) => {
   container.addEventListener('dragover', (e) => {
     e.preventDefault()
     const task = document.querySelector('.dragging')
-    // issue new elements are not reciving the class dragging
     const afterElement = getDragAfterElement(container, e.clientY)
-    // console.log(afterElement)
     if (afterElement === null) {
       container.appendChild(task)
     } else if (container.id === 'trush') {
@@ -558,7 +540,10 @@ function getDragAfterElement(container, y) {
   ).element
 }
 
-// Personal Additon = Button Tool tips based dataset
+/*
+    Aim ( Personal Additon = Button Tool tips based dataset: toolTip()): the function will read the dataset 'tooltip' of the element with the function input (itemId) and create a tooltip which will appear during mouse over and remove during 'mouseout'.
+*/
+
 function toolTip(itemId) {
   const item = document.getElementById(itemId)
   console.log(item)
@@ -576,14 +561,14 @@ function toolTip(itemId) {
 
   item.append(tooltipSingle)
 }
-
 toolTip('save-btn')
 toolTip('load-btn')
 toolTip('trush')
 
-// Personal Additon = Message Box For success and Errors
+/*
+    Aim ( Personal Additon = Message Box For success and Errors: createSuccessMssage(),RemoveSuccessMssage(): the function createSuccessMssage will create the pop up div with the inputs fields (messageColor,messageTitle, message,emoji,divbackground), RemoveSuccessMssage function will connect to the dismiss function and remove the div when clicked, then the rest of the functions (lunchSuccessMessageBox(), lunchErrorMessageBox(), lunchBadInputMessageBox(), lunchDeletedItemMessageBox()) will lunch different messages popups when being called, and will be removed when dismiss button clicked
+*/
 
-// this function will create the pop up div
 function createSuccessMssage(
   messageColor,
   messageTitle,
@@ -626,13 +611,11 @@ function createSuccessMssage(
   body.append(successMssageBox)
 }
 
-// this function will connect to the dismiss function and remove the div
 function RemoveSuccessMssage() {
   const successMssageBox = document.getElementById('successMssageBox')
   successMssageBox.remove()
 }
 
-// this function will lunch the a Success Div
 function lunchSuccessMessageBox() {
   createSuccessMssage(
     'green',
@@ -644,9 +627,6 @@ function lunchSuccessMessageBox() {
   const successMssageBox = document.getElementById('successMssageBox')
   successMssageBox.classList.add('active')
 }
-// lunchSuccessMessageBox()
-
-// this function will lunch the a Error Div
 
 function lunchErrorMessageBox() {
   createSuccessMssage(
@@ -659,7 +639,6 @@ function lunchErrorMessageBox() {
   const successMssageBox = document.getElementById('successMssageBox')
   successMssageBox.classList.add('active')
 }
-// lunchErrorMessageBox()
 
 function lunchBadInputMessageBox() {
   createSuccessMssage('red', 'Error', 'Must Insert a Task', '❌', 'white')
