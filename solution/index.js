@@ -20,7 +20,7 @@ function lunchLocalStorage() {
 }
 
 /*
-    Aim (buildHtmlStructure): build all the html structure based on the local data while lunch page
+    Aim (buildHtmlStructure): build all the html structure based on the local data while page lunches
 */
 function buildHtmlStructure(lunchLocalStorage) {
   restoreToDoItems(lunchLocalStorage)
@@ -30,7 +30,7 @@ function buildHtmlStructure(lunchLocalStorage) {
 buildHtmlStructure(lunchLocalStorage())
 
 /*
-    Aim (data lists): Data lists will store all the current, changed and exisiting tasks after every opration.
+    Aim (data lists): Data lists that will store all the current, changed, and existing tasks after every operation.
 */
 const toDoDataList = []
 const inProgressDataList = []
@@ -59,7 +59,7 @@ function backUpLocalStorage(lunchLocalStorage) {
 backUpLocalStorage(lunchLocalStorage())
 
 /*
-    Aim (CreateNewJsonData): Taks all the data from the Data lists, create and return a json called NewJsonData.
+    Aim (CreateNewJsonData): Takes all the data from the Data lists, creates and returns a JSON called NewJsonData.
 */
 function CreateNewJsonData(
   toDoDataList,
@@ -75,7 +75,7 @@ function CreateNewJsonData(
 }
 
 /*
-    Aim (setLocalStorage): Most Repited and used function, setLocalStorage will take as an input the newly created json from CreateNewJsonData which will include all the data list changes on every run
+    Aim (setLocalStorage): Most Repeated and used function, setLocalStorage will take as an input the newly created JSON from CreateNewJsonData which will include all the data list changes on every run
 */
 
 function setLocalStorage(jsonData) {
@@ -149,7 +149,7 @@ submintDoneTasksBtn.addEventListener('click', (e) => {
 })
 
 /*
-    Aim (createTaskElement): The function will taks a an input a text and return a Task element, in addion it will change its Attribute to draggable and implement the drag and drop feature, aswell as change its content to contentEditable which allow changing its content by double clicking a task element, then it will return the newly created Task 'LI' element.
+    Aim (createTaskElement): The function will take an input a text and return a Task element, in addition, it will change its Attribute to draggable and implement the drag and drop feature, as well as changing its content to contentEditable which allow changing its content by double-clicking a task element, then it will return the newly created Task 'LI' element.
 */
 function createTaskElement(text) {
   const newTaskElement = document.createElement('li')
@@ -173,7 +173,7 @@ function createTaskElement(text) {
 }
 
 /*
-    Aim (restoreToDoItems, restoreInProgressItems, restoreDoneItems): The next 3 Functions will read any exisiting To-Do-Items from the local storage and send all the data from the Data lists which Comes from the lunchLocalStorage and will create Task Elemnts for each item in the Data Lists, and then will append the new Elements to the Ul Sections, the 3 functions will run inside the  buildHtmlStructure right when the page loads.
+    Aim (restoreToDoItems, restoreInProgressItems, restoreDoneItems): The next 3 Functions will read any existing To-Do-Items from the local storage and send all the data from the Data lists which Comes from the lunchLocalStorage and will create Task Elements for each item in the Data Lists, and then will append the new Elements to the Ul Sections, the 3 functions will run inside the buildHtmlStructure right when the page loads.
 */
 function restoreToDoItems(lunchLocalStorage) {
   const toDoUlSection = document.querySelector('.to-do-tasks')
@@ -203,7 +203,7 @@ function restoreDoneItems(lunchLocalStorage) {
 }
 
 /*
-    Aim (move tasks with alt + numbers Functionality): In this section the document will be added an event keydown which will tell whether the alt key, 1, 2 or 3 are now pressed, then by adding the querySelectorAll(':hover'), the document will continuously log a list of all the elements being hovered at the moment to the console. Then a condition will run a check on the last item of that list. First, a Condition continuously checkes whather alt is pressed combined with 1,2 or 3,then if the mouse was last on one od the Elements with a class of 'task', it will move the Element to a section based on the number key and add the element which has joined to the Current section's Data List, After that, remove the element which has moved from its last DataList and Remove the Element from the page by using the altNumberRemove function, then it will save the current state to the LocalStorage using the  altNumberToDoAdd, altNumberInProgressAdd or altNumberDoneTaskAdd. 
+    Aim (move tasks with alt + numbers Functionality): In this section, the document will be added an event keydown which will tell whether the alt key, 1, 2, or 3 are now pressed, then by adding the querySelectorAll(':hover'), the document will continuously log a list of all the elements being hovered at the moment to the console. Then a condition will run a check on the last item of that list. First, a Condition continuously checks whether alt is pressed combined with 1,2 or 3, then if the mouse was last on one of the Elements with a class of 'task', it will move the Element to a section based on the number key and add the element which has joined to the Current section's Data List, After that, remove the element which has moved from its last DataList and Remove the Element from the page by using the altNumberRemove function, then it will save the current state to the LocalStorage using the altNumberToDoAdd, altNumberInProgressAdd or altNumberDoneTaskAdd. 
 */
 
 document.addEventListener('keydown', (hoverTaskEvent) => {
@@ -246,7 +246,7 @@ document.addEventListener('keydown', (hoverTaskEvent) => {
 })
 
 /*
-    Aim (altNumberToDoAdd, altNumberInProgressAdd, altNumberDoneTaskAdd): Functions will receive the element which was passed textContent and add its to the begining of the New Section's Data List, then it will also create a new Task Element of that textContent and add it to the beginning of the Section. Then it will save the changes of the Data Lists to the Local Storage using setLocalStorage.
+    Aim (altNumberToDoAdd, altNumberInProgressAdd, altNumberDoneTaskAdd): Functions will receive the element which was passed textContent and add it to the beginning of the New Section's Data List, then it will also create a new Task Element of that textContent and add it to the beginning of the Section. Then it will save the changes of the Data Lists to the Local Storage using setLocalStorage.
 */
 function altNumberToDoAdd(text) {
   const toDoUlSection = document.querySelector('.to-do-tasks')
@@ -310,7 +310,7 @@ function spliceDataList(dataClassName, previousText, newText) {
 }
 
 /*
-    Aim (displayElementsByQuary): This function used for the 'User should be able to search between tasks', The function takes the value from the input field with an event 'keyup' then checks whether the current Ul.childeren (tasks of each parent Section) includes the value(search key word), if so they will be shown, else, they with disappaer by display none. The function is always active and should be called right at the bottom after the function.
+    Aim (displayElementsByQuary): This function used for the 'User should be able to search between tasks', The function takes the value from the input field with an event 'keyup' then checks whether the current Ul.childeren (tasks of each parent Section) includes the value(search key word), if so they will be shown, else, they with disappear by display none. The function is always active and should be called right at the bottom after the function.
 */
 function displayElementsByQuary() {
   const quaryInputField = document.getElementById('search')
@@ -345,7 +345,7 @@ function displayElementsByQuary() {
 displayElementsByQuary()
 
 /*
- Aim (loadDataFromApi): This function used for the 'User should be able to save and load their tasks from the api and save it to the local storage' When the load button gets clicked the fucntion will send a get request to the api, All the Current Data List will be reset by Array.length = 0, then the function will get from the response Json Setions (todo, 'in-progress' & done) the api data and restore it into the Data Lists which will be saved into the localStorage by setLocalStorage function. In case the response Json from the api empty of data, the fucntion will catch the error and pass. while awaiting for the api response, there will be a loader and at the end a short success message. The function is always active and should be called right at the bottom after the function.
+ Aim (loadDataFromApi): This function used for the 'User should be able to save and load their tasks from the API and save it to the local storage' When the load button gets clicked the function will send a get request to the API, All the Current Data List will be reset by Array.length = 0, then the function will get from the response JSON Sections (todo, 'in-progress & done) the API data and restore it into the Data Lists which will be saved into the localStorage by setLocalStorage function. In case the response JSON from the API is empty of data, the function will catch the error and pass. while awaiting the API response, there will be a loader and at the end a short success message. The function is always active and should be called right at the bottom after the function.
 */
 function loadDataFromApi() {
   const load = document.getElementById('load-btn')
@@ -395,7 +395,7 @@ function loadDataFromApi() {
 loadDataFromApi()
 
 /*
- Aim (saveDataToApi): This function used for the 'User should be save tasks from the api' When the save button gets clicked the fucntion will send a post request to the api, the post request will include the current localStorage state using the function lunchLocalStorage() which continiously holders the current state of the localStorage. By clicking save it will change the Api Data to the current state of the localStorage, when the request fails an Error massage Box will be shown, otherwise, a success massage Box will be shown. The function is always active and should be called right at the bottom after the function.
+ Aim (saveDataToApi): This function used for the 'User should be saved tasks from the API When the save button gets clicked the function will send a post request to the API, the post request will include the current localStorage state using the function lunchLocalStorage() which continuously holders the current state of the localStorage. By clicking save it will change the API Data to the current state of the localStorage, when the request fails an Error massage Box will be shown, otherwise, a success massage Box will be shown. The function is always active and should be called right at the bottom after the function.
 */
 function saveDataToApi() {
   const save = document.getElementById('save-btn')
@@ -431,7 +431,7 @@ function saveDataToApi() {
 saveDataToApi()
 
 /*
-    Aim (removeAllTasks): This function used on the start of the loadDataFromApi function, the function will select all the elements with a class task and remove them from the page.
+    Aim (removeAllTasks): This function is used at the start of the loadDataFromApi function, the function will select all the elements with a class task and remove them from the page.
 */
 function removeAllTasks() {
   Array.from(document.querySelectorAll('.task')).forEach((task) => {
@@ -440,7 +440,7 @@ function removeAllTasks() {
 }
 
 /*
-    Aim (createLoader, removeLoader): Those function resposible for the loader used during the api requests operations save(put) and load(get), on a save or load button click the loader will be lunched and end after the request was complete.
+    Aim (createLoader, removeLoader): Those functions responsible for the loader used during the API requests operations save(put) and load(get), on a save or load button click the loader will be lunched and end after the request was complete.
 */
 function createLoader() {
   const loading = document.createElement('div')
@@ -463,7 +463,7 @@ function removeLoader() {
 }
 
 /*
-    Aim (dragDrop: Implement drag-and-drop sorting of tasks): The drag and drop Fuctionality implemented on every task element during its creation.  dragDrop will receive a task element as an input and give it an event 'dragstart', during that event it will be added a class 'dragging', and the task element will be removed from its current Data List by using the altNumberRemove function. when drag is over the task element will receive an event 'dragend', then the class 'dragging' will be removed, and then function will run a check on its new Parent element (Ul container) and add it to the new Data List, the Save to localStorage with the setLocalStorage Function.
+    Aim (drag-drop: Implement drag-and-drop sorting of tasks): The drag and drop functionality is implemented on every task element during its creation.  drag-drop will receive a task element as an input and give it an event 'dragstart', during that event it will be added a class 'dragging', and the task element will be removed from its current Data List by using the altNumberRemove function. when drag is over the task element will receive an event 'dragend', then the class 'dragging' will be removed, and then the function will run a check on its new Parent element (Ul container) and add it to the new Data List, the Save to localStorage with the setLocalStorage Function.
 */
 const tasks = document.querySelectorAll('.task')
 const containers = document.querySelectorAll('ul')
@@ -499,8 +499,8 @@ function dragDrop(task) {
 }
 
 /*
-    Aim (containers Event, getDragAfterElement(Implement drag-and-drop sorting of tasks)): Each container will get an event 'dragover', the getDragAfterElement Function will receive two inputs (container, y), the container will be each one of the containers (Ul) on the document, the y will be the clientY of the current container which the task passed to, then it will target inside the container all the task element which currenly not being drag by quary selector ('.task:not(.dragging)'), then it will make a reduce function on the currenly not being drag elements. calculate their current average (box highet and width ) and reduce it from the current container clientY into a variable called offset, then checks if the offest is negative which means its under another task element and greater than the closest task element offset (the task element which currently below), then return the task element which above the element currently being dragged. if there is not a task element above it will return the closet element (the element blow). 
-    Then during the 'dragover' event a veriable called afterElement gets the value of the element which is above the element which currently being dragged, then check if its equal to null, it will append it, if the container id is trush it will remove the task, else its insert the task Before the element below (afterElement).
+    Aim (containers Event, getDragAfterElement(Implement drag-and-drop sorting of tasks)): Each container will get an event 'dragover', the getDragAfterElement Function will receive two inputs (container, y), the container will be each one of the containers (Ul) on the document, the y will be the clientY of the current container which the task passed to, then it will target inside the container all the task element which currently not being drag by query selector ('.task:not(.dragging)'), then it will make a reduce function on the currently not being drag elements. calculate their current average (box highet and width ) and reduce it from the current container clientY into a variable called offset, then checks if the offset is negative which means it's under another task element and greater than the closest task element offset (the task element which currently below), then return the task element which above the element currently being dragged. if there is not a task element above it will return the closet element (the element blow). 
+    Then during the 'dragover' event, a variable called afterElement gets the value of the element which is above the element which currently being dragged, then check if it is equal to null, it will append it, if the container id is trash it will remove the task, else its insert the task Before the element below (afterElement).
     
 */
 containers.forEach((container) => {
@@ -541,7 +541,7 @@ function getDragAfterElement(container, y) {
 }
 
 /*
-    Aim ( Personal Additon = Button Tool tips based dataset: toolTip()): the function will read the dataset 'tooltip' of the element with the function input (itemId) and create a tooltip which will appear during mouse over and remove during 'mouseout'.
+    Aim ( Personal Addition = Button Tooltips based dataset: toolTip()): the function will read the dataset 'tooltip' of the element with the function input (itemId) and create a tooltip which will appear during mouse over and remove during 'mouseout'.
 */
 
 function toolTip(itemId) {
