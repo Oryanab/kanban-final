@@ -1,122 +1,19 @@
-# Cyber4s 3rd Pre-Course Final Project
+# Task Manager App
 
-## What we will be building
+Welcome to your new task management application, where you can write all of your tasks and keep track of your progress!
 
-Welcome to your pre-course final project. You are going to build a task-management application.
+## User Manual
 
-![Example](./example.png)
+1. Insert your task based on its state in each one of the sections you would like.
+2. In case you want to change the task's Name, double click on the task and start typing the new name, when you have done, click anywhere outside the Task and it will be saved!
+3. You can change the tasks location by pointing on the task with your mouse and click on the Alt key + 1, 2, or 3, 1 = Todo Section, 2 = In Progress Section, 3 = Done Section, The Task will shift to the section you would like, and the changes will be saved automatically.
+4. You may also move the Tasks around by dragging and dropping each one of the tasks in the different sections.
+5. On the Top of the page you have a search bar where you can search for any task you wish to find.
+6. By hovering every button (Apart from the + buttons) you will see a tooltip popup that explains exactly what each button does.
+7. Wandering How to Save your work on your Computer? Do not worry at all! the task manager will save all your changes on your web browser, so you can feel free to close the tasks manager and come back to it tomorrow!
+8. After every operation (Apart from Adding Tasks) You will get a notification message whether your action succeeded or failed, after you have read the notification, feel free to click on the 'dismiss' button and get back to work!
+9. Load & Save Buttons - on the top right corner you will be able to see the Load and Save Buttons. Apart from saving your work on the browser you can access your task manager from anywhere you would like, all you need to do after you finish writing all your tasks make sure to click on the Save button and it will save your work on the Cloud, then if you want to view all your work again click on the Load button and not only all your tasks will appear on the screen, it will also save all the task in the new Web Browser.
+10. On the button of the page you can see a trash can section, In case you want to delete some of your tasks all you have to do is to drag the task to the trash can section and it will permanently remove the task, in case the deleting process has been completed you will get notified.
+11. On the top right corner you can see a Tutorial button which will open a popup with all the information you will need to use the Task Manager.
 
-## Instructions
-
-1. Fork this repo into your account.
-2. Clone the forked repo to your computer.
-3. Run the [setup](#setup) script.
-4. Create a new git branch for your work.
-5. Complete the project [requirements](#requirements).
-6. Push your work to GitHub.
-7. [Submit](#submission) your work.
-
-## Setup
-
-Execute `npm run final <your name>` (replace `<your name>` with your name). This command will install all the needed dependencies, and generate an [api-data.txt](#api-integration) file.
-
-## Requirements
-
-### Page Structure
-
-There should be 3 `section` elements. One for to-do tasks, one for in-progress tasks, and one for done tasks.
-
-Each `section` should contain:
-
-- [ ] a `ul` element with the appropriate class - `to-do-tasks`/`in-progress-tasks`/`done-tasks`
-- [ ] an `input` element with an appropriate id - `add-to-do-task`/`add-in-progress-task`/`add-done-task`
-- [ ] a `button` element with an appropriate id - `submit-add-to-do`/`submit-add-in-progress`/`submit-add-done`
-- [ ] Each `ul` should contain task elements, which are `li` elements with the `task` class.
-
-In addition the page should contain:
-
-- [ ] a heading with a `page-title` id
-- [ ] a global input with the `search` id
-
-### Interaction
-
-- [ ] When the user clicks on one of the add-task buttons, a new task will be added to the respective list. The task content will be taken from the respective input field.
-- [ ] Trying to submit empty tasks should cause an alert.
-- [ ] Double clicking a task element will enable the user to edit its text. When the task element loses focus (`blur` event) the change will be saved.
-- [ ] Hovering over a task element and pressing `alt + 1-3` will move the task to the appropriate list (`1`: todo, `2`: in-progress, `3`: done).
-- [ ] The search input should filter tasks case-**in**sensitively, so that only tasks that match the search string are displayed. The filter will be reapplied every time the user changes the content of the search input (on **every keystroke**).
-
-### Storage
-
-- [ ] The data of all the tasks should be saved to `localStorage` following any changes made to the data. The data should be saved under a storage key named `tasks`. It should be saved in the following format (use the data saved in the local storage to keep the data on the page after refresh):
-
-```json
-{
-  "todo": [],
-  "in-progress": [],
-  "done": []
-}
-```
-
-- [ ] Even if there are no tasks, there should still be a `tasks` key in the `localStorage`, in the above format (the arrays will just be empty).
-
-## Bonuses
-
-- [ ] Implement drag-and-drop sorting of tasks.
-- [ ] Add API integration:
-
-  - [ ] Add save and load buttons that sync the current tasks to the API (see details in the [api-data.txt](#api-integration) file).
-  - [ ] Remove the `.skip` from the two last tests in `main.test.js`.
-  - [ ] While waiting for a response from the API display a loader with the class `loader`.
-  - [ ] If an error occurs show an alert.
-  - [ ] If the data loaded from the API is different from the local data, replace the local data with the API data. Make sure you update both the `localStorage` and the DOM.
-
-- [ ] Add any additional cool features you can think of...
-
-## README
-
-You are expected to change the README of your project to showcase your application. Make it readable and explain what your app does. Put a screenshot and a link to GitHub pages.
-
-## Template
-
-You are provided with a template to write your code in, inside the `solution` folder. You should write your code inside `index.html`, `index.js`, `style.css`. You may create additional files for your convenience, but do not change the names of the existing ones.
-
-## API Integration
-
-Once you complete the [initial setup](#setup) you will see an `api-data.txt` file that was created in the project folder. This file will contain the URLs which you can access the API with, using a unique bin ID that was generated for you.
-
-The API is a simple remote storage that gives you a "bin" where you can store data. It allows you to save a chunk of data, or load it.
-
-## Testing
-
-We have added some automated tests for you to use. They will help you make sure your code covers the requirements.
-
-To run the tests, execute `npm run test`.
-
-## Grading
-
-Your work will be graded based on the following considerations:
-
-- The number of tests you pass
-- Readable and ordered code
-  - Spacing & indentation
-  - Indicative vairable/function names
-  - Comments (where necessary)
-- Proper use of Git
-  - Small, standalone commits
-  - Descriptive commit messages
-  - Working in branches and creating a proper PR
-- Convenient visual design (make your app b-e-a-utiful)
-- Extra features you might have added
-
-## Submission
-
-1. On GitHub, open a pull request from your branch to the main branch.
-2. **Do not merge the pull request!**
-3. Add the user `Cyber4sPopo` as collaborator to your repo.
-4. Deploy your application to GitHub pages.
-5. Submit in Google Classroom:
-   - a link to the pull request
-   - a link to your site on GitHub pages
-   - a 5 minutes min selfie video, where you talk about yourself in a few words (age, location, military background, technological background). Think about this video as a part of your interview.
-   - another 2-5 minute video where you talk about your submission solution, showing how your app works and any special features you added.
+## Enjoy!
