@@ -163,6 +163,7 @@ function createTaskElement(text) {
   newTaskElement.textContent = text
   // add draggable feature for the draf&drop feature
   newTaskElement.setAttribute('draggable', 'true')
+  dragDrop(newTaskElement)
   // this function will add a dubble click event to each item with class Tags, then will enable content editing for the li, then it will add another event - Blur turn on the spliceDataList Method
   newTaskElement.addEventListener('dblclick', (allowContentEdit) => {
     const currentText = newTaskElement.textContent
@@ -175,7 +176,6 @@ function createTaskElement(text) {
       )
     })
   })
-
   return newTaskElement
 }
 //###########################################################################
@@ -185,7 +185,7 @@ function restoreToDoItems(lunchLocalStorage) {
   const toDoUlSection = document.querySelector('.to-do-tasks')
   try {
     for (let toDoItem of lunchLocalStorage.todo) {
-      toDoUlSection.append(createTaskElement(toDoItem))
+      toDoUlSection.appendChild(createTaskElement(toDoItem))
     }
   } catch (e) {}
 }
@@ -194,7 +194,7 @@ function restoreInProgressItems(lunchLocalStorage) {
   const inProgressUlSection = document.querySelector('.in-progress-tasks')
   try {
     for (let inProgressItem of lunchLocalStorage['in-progress']) {
-      inProgressUlSection.append(createTaskElement(inProgressItem))
+      inProgressUlSection.appendChild(createTaskElement(inProgressItem))
     }
   } catch (e) {}
 }
@@ -203,7 +203,7 @@ function restoreDoneItems(lunchLocalStorage) {
   const doneTasksUlSection = document.querySelector('.done-tasks')
   try {
     for (let doneItem of lunchLocalStorage.done) {
-      doneTasksUlSection.append(createTaskElement(doneItem))
+      doneTasksUlSection.appendChild(createTaskElement(doneItem))
     }
   } catch (e) {}
 }
@@ -384,7 +384,7 @@ function loadDataFromApi() {
       try {
         toDoDataList.push(toDoApiItem)
         const toDoUlSection = document.querySelector('.to-do-tasks')
-        toDoUlSection.append(createTaskElement(toDoApiItem))
+        toDoUlSection.appendChild(createTaskElement(toDoApiItem))
         console.log(toDoDataList)
       } catch (e) {}
     })
@@ -392,14 +392,14 @@ function loadDataFromApi() {
       try {
         inProgressDataList.push(inProgressApiItem)
         const inProgressUlSection = document.querySelector('.in-progress-tasks')
-        inProgressUlSection.append(createTaskElement(inProgressApiItem))
+        inProgressUlSection.appendChild(createTaskElement(inProgressApiItem))
       } catch (e) {}
     })
     apiJsonData.tasks.done.forEach((doneTaskApiItem) => {
       try {
         doneTasksDataList.push(doneTaskApiItem)
         const doneTasksUlSection = document.querySelector('.done-tasks')
-        doneTasksUlSection.append(createTaskElement(doneTaskApiItem))
+        doneTasksUlSection.appendChild(createTaskElement(doneTaskApiItem))
       } catch (e) {}
     })
 
@@ -473,7 +473,7 @@ function createLoader() {
   )
 
   loading.appendChild(imageLoader)
-  document.body.append(loading)
+  document.body.appendChild(loading)
 }
 
 function removeLoader() {
@@ -493,7 +493,7 @@ const tasks = document.querySelectorAll('.task')
 // every container is a ul
 const containers = document.querySelectorAll('ul')
 
-tasks.forEach((task) => {
+function dragDrop(task) {
   task.addEventListener('dragstart', (e) => {
     task.classList.add('dragging')
     altNumberRemove(task.parentElement.classList[0], task.textContent)
@@ -522,26 +522,54 @@ tasks.forEach((task) => {
       }
     } catch (e) {}
   })
-})
+}
+
+// tasks.forEach((task) => {
+//   task.addEventListener('dragstart', (e) => {
+//     task.classList.add('dragging')
+//     altNumberRemove(task.parentElement.classList[0], task.textContent)
+//   })
+//   task.addEventListener('dragend', (e) => {
+//     task.classList.remove('dragging')
+//     try {
+//       if (task.parentElement.classList[0] === 'to-do-tasks') {
+//         const toDoUlSection = document.querySelector('.to-do-tasks')
+//         toDoDataList.unshift(task.textContent)
+//         setLocalStorage(
+//           CreateNewJsonData(toDoDataList, inProgressDataList, doneTasksDataList)
+//         )
+//       } else if (task.parentElement.classList[0] === 'in-progress-tasks') {
+//         const inProgressUlSection = document.querySelector('.in-progress-tasks')
+//         inProgressDataList.unshift(task.textContent)
+//         setLocalStorage(
+//           CreateNewJsonData(toDoDataList, inProgressDataList, doneTasksDataList)
+//         )
+//       } else {
+//         const doneTasksUlSection = document.querySelector('.done-tasks')
+//         doneTasksDataList.unshift(task.textContent)
+//         setLocalStorage(
+//           CreateNewJsonData(toDoDataList, inProgressDataList, doneTasksDataList)
+//         )
+//       }
+//     } catch (e) {}
+//   })
+// })
 
 containers.forEach((container) => {
   container.addEventListener('dragover', (e) => {
     e.preventDefault()
     const task = document.querySelector('.dragging')
+    // issue new elements are not reciving the class dragging
     const afterElement = getDragAfterElement(container, e.clientY)
     // console.log(afterElement)
     if (afterElement === null) {
-      container.append(task)
+      container.appendChild(task)
     } else if (container.id === 'trush') {
       try {
         task.remove()
       } catch (e) {}
     } else {
-      try {
-        container.insertBefore(task, afterElement)
-      } catch (e) {
-        alert('Cant Add Deleted Items')
-      }
+      container.insertBefore(task, afterElement)
     }
   })
 })
