@@ -567,7 +567,7 @@ toolTip('trush')
 toolTip('tutorial')
 
 /*
-    Aim ( Personal Additon = Message Box For success and Errors: createSuccessMssage(),RemoveSuccessMssage(): the function createSuccessMssage will create the pop up div with the inputs fields (messageColor,messageTitle, message,emoji,divbackground), RemoveSuccessMssage function will connect to the dismiss function and remove the div when clicked, then the rest of the functions (lunchSuccessMessageBox(), lunchErrorMessageBox(), lunchBadInputMessageBox(), lunchDeletedSuccessfulMessageBox()) will lunch different messages popups when being called, and will be removed when dismiss button clicked
+    Aim ( Personal Additon = Message Box For success and Errors: createSuccessMssage(),RemoveSuccessMssage(): the function createSuccessMssage will create the pop up div with the inputs fields (messageColor,messageTitle, message,emoji,divbackground), RemoveSuccessMssage function will connect to the dismiss function and remove the div when clicked, then the rest of the functions (lunchSuccessMessageBox(), lunchErrorMessageBox(), lunchBadInputMessageBox(), lunchDeletedSuccessfulMessageBox()) will lunch different messages popups when being called, and will be removed when dismiss button gets clicked
 */
 
 function createSuccessMssage(
