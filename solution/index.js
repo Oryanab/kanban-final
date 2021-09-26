@@ -1,12 +1,8 @@
 'use strict'
 
-// Set up a Counter id
-function ganerateId() {
-  let randomId = Math.round(Math.random() * 5000 + 1)
-  return randomId
-}
-
-// read the exisiting local data
+/*
+    Aim (lunchLocalStorage): read the exisiting local data and return it
+*/
 function lunchLocalStorage() {
   const localStorageJson = localStorage.getItem('tasks')
 
@@ -20,11 +16,12 @@ function lunchLocalStorage() {
       })
     )
   }
-
   return JSON.parse(localStorageJson)
 }
 
-// build all the html based on the data
+/*
+    Aim (buildHtmlStructure): build all the html structure based on the local data while lunch page
+*/
 function buildHtmlStructure(lunchLocalStorage) {
   restoreToDoItems(lunchLocalStorage)
   restoreInProgressItems(lunchLocalStorage)
@@ -32,12 +29,16 @@ function buildHtmlStructure(lunchLocalStorage) {
 }
 buildHtmlStructure(lunchLocalStorage())
 
-// create the basic data lists
+/*
+    Aim (data lists): Data lists will store all the current, changed and exisiting tasks after every opration.
+*/
 const toDoDataList = []
 const inProgressDataList = []
 const doneTasksDataList = []
 
-// Need to add every run the info to the lists:
+/*
+    Aim (backUpLocalStorage): insert all the data list with all the task elements on every run.
+*/
 function backUpLocalStorage(lunchLocalStorage) {
   try {
     for (let todo of lunchLocalStorage.todo) {
@@ -57,7 +58,9 @@ function backUpLocalStorage(lunchLocalStorage) {
 }
 backUpLocalStorage(lunchLocalStorage())
 
-// add new data data
+/*
+    Aim (CreateNewJsonData): Taks all the data from the Data lists, create and return a json called NewJsonData.
+*/
 function CreateNewJsonData(
   toDoDataList,
   inProgressDataList,
@@ -71,16 +74,23 @@ function CreateNewJsonData(
   return NewJsonData
 }
 
-// set the new local data
+/*
+    Aim (setLocalStorage): Most Repited and used function, setLocalStorage will take as an input the newly created json from CreateNewJsonData which will include all the data list changes on every run
+*/
+
 function setLocalStorage(jsonData) {
   localStorage.setItem('tasks', JSON.stringify(jsonData))
 }
 
-// Now We are creating the Function which will take the text inputs and Add to the basic data lists:
-// Function create a new To Do element and Add it to the to-Do-Data-List:
+/*
+   Aim (Creating the Add task Functionality): the add Button events will take the text inputs and Add to our Data lists, in case the input is empty there will be an error message box, else there will be a successmessage box
+*/
+
+/*
+  Create a new To Do element and Add it to the to-Do-Data-List 
+*/
 const submintToDoBtn = document.getElementById('submit-add-to-do') // Button
 const inputToDo = document.getElementById('add-to-do-task') // Inputs field
-// Create new To Do element:
 submintToDoBtn.addEventListener('click', (e) => {
   if (inputToDo.value.length > 0) {
     toDoDataList.unshift(inputToDo.value)
@@ -96,10 +106,11 @@ submintToDoBtn.addEventListener('click', (e) => {
   inputToDo.value = ''
 })
 
-// Function create a new In Progress element and Add it to the in-progress
+/*
+   Create a new In Progress element and Add it to the in-progress
+*/
 const submintInProgressBtn = document.getElementById('submit-add-in-progress')
 const inputInProgress = document.getElementById('add-in-progress-task')
-// Create new in Progress element:
 submintInProgressBtn.addEventListener('click', (e) => {
   if (inputInProgress.value.length > 0) {
     inProgressDataList.unshift(inputInProgress.value)
@@ -115,10 +126,13 @@ submintInProgressBtn.addEventListener('click', (e) => {
   inputInProgress.value = ''
 })
 
-// Function create a new done-Tasks element and Add it to the done
+/*
+   Create a new done-Tasks element and Add it to the done
+*/
+
 const submintDoneTasksBtn = document.getElementById('submit-add-done')
 const inputDoneTasks = document.getElementById('add-done-task')
-// Create new done element:
+
 submintDoneTasksBtn.addEventListener('click', (e) => {
   if (inputDoneTasks.value.length > 0) {
     doneTasksDataList.unshift(inputDoneTasks.value)
@@ -134,37 +148,15 @@ submintDoneTasksBtn.addEventListener('click', (e) => {
   inputDoneTasks.value = ''
 })
 
-// // ############################## the flow of adding new items
-
-// // step 1: adding new elements to the LocalStorage:
-//__________________________________________________________
-// toDoDataList.push({ id: 1, conetent: "lalalla" });
-// inProgressDataList.push({ id: 1, conetent: "lalalla" });
-// doneTasksDataList.push({ id: 1, conetent: "lalalla" });
-//__________________________________________________________
-// // step 2: Refactoring the LocalStorage with the new data
-//__________________________________________________________
-// setLocalStorage(
-//     CreateNewJsonData(toDoDataList, inProgressDataList, doneTasksDataList)
-//   );
-//__________________________________________________________
-
-// //   step 3: Ganerating all the html stracture:
-//__________________________________________________________
-//   buildHtmlStructure(lunchLocalStorage());
-//__________________________________________________________
-
-// //   ############################## the flow of adding new items
-
-// Create the element li to add to every block
+/*
+    Aim (createTaskElement): The function will taks a an input a text and return a Task element, in addion it will change its Attribute to draggable and implement the drag and drop feature, aswell as change its content to contentEditable which allow changing its content by double clicking a task element, then it will return the newly created Task 'LI' element.
+*/
 function createTaskElement(text) {
   const newTaskElement = document.createElement('li')
   newTaskElement.classList.add('task')
   newTaskElement.textContent = text
-  // add draggable feature for the draf&drop feature
   newTaskElement.setAttribute('draggable', 'true')
   dragDrop(newTaskElement)
-  // this function will add a dubble click event to each item with class Tags, then will enable content editing for the li, then it will add another event - Blur turn on the spliceDataList Method
   newTaskElement.addEventListener('dblclick', (allowContentEdit) => {
     const currentText = newTaskElement.textContent
     newTaskElement.contentEditable = 'true'
@@ -178,9 +170,10 @@ function createTaskElement(text) {
   })
   return newTaskElement
 }
-//###########################################################################
-// this function will read any exisiting To-Do-Items on the local storage or
-// create the list if it fails to read
+
+/*
+    Aim (restoreToDoItems, restoreInProgressItems, restoreDoneItems): The next 3 Functions will read any exisiting To-Do-Items from the local storage and send all the data from the Data lists which Comes from the lunchLocalStorage and will create Task Elemnts for each item in the Data Lists, and then will append the new Elements to the Ul Sections, the 3 functions will run inside the  buildHtmlStructure right when the page loads.
+*/
 function restoreToDoItems(lunchLocalStorage) {
   const toDoUlSection = document.querySelector('.to-do-tasks')
   try {
@@ -207,11 +200,12 @@ function restoreDoneItems(lunchLocalStorage) {
     }
   } catch (e) {}
 }
-//###########################################################################
 
-//User should be able to move tasks with alt + numbers and the new lists data should be saved to local storage (79 ms)
+/*
+    Aim (move tasks with alt + numbers Functionality): In this section the document will be added an event keydown which will tell whether the alt key, 1, 2 or 3 are now pressed, then by adding the querySelectorAll(':hover'), the document will continuously log a list of all the elements being hovered at the moment to the console. Then a condition will run a check on the last item of that list. First, a Condition continuously checkes whather alt is pressed combined with 1,2 or 3,then if the mouse was last on one od the Elements with a class of 'task', it will move the Element to a section based on the number key and add the element which has joined to the Current section's Data List, After that, remove the element which has moved from its last DataList and Remove the Element from the page by using the altNumberRemove function, then it will save the current state to the LocalStorage using the  altNumberToDoAdd, altNumberInProgressAdd or altNumberDoneTaskAdd. 
+*/
+
 document.addEventListener('keydown', (hoverTaskEvent) => {
-  //#########################################
   const allHoveredItems = Array.from(document.querySelectorAll(':hover'))
   const allTaskItems = Array.from(document.getElementsByClassName('task'))
   if (hoverTaskEvent.altKey && hoverTaskEvent.keyCode === 49) {
@@ -677,7 +671,7 @@ function lunchDeletedItemMessageBox() {
   createSuccessMssage(
     'red',
     'This Item Was Deleted',
-    'We are sorry It is not possible to add back an item after set to trush',
+    'We are sorry It is not possible to add back an item after sent to trush',
     '❌',
     'white'
   )
