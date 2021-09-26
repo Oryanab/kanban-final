@@ -88,7 +88,7 @@ submintToDoBtn.addEventListener('click', (e) => {
       createTaskElement(toDoDataList[0])
     )
   } else {
-    alert('Must Insert a Task')
+    lunchBadInputMessageBox()
   }
   setLocalStorage(
     CreateNewJsonData(toDoDataList, inProgressDataList, doneTasksDataList)
@@ -107,7 +107,7 @@ submintInProgressBtn.addEventListener('click', (e) => {
       createTaskElement(inProgressDataList[0])
     )
   } else {
-    alert('Must Insert a Task')
+    lunchBadInputMessageBox()
   }
   setLocalStorage(
     CreateNewJsonData(toDoDataList, inProgressDataList, doneTasksDataList)
@@ -126,7 +126,7 @@ submintDoneTasksBtn.addEventListener('click', (e) => {
       createTaskElement(doneTasksDataList[0])
     )
   } else {
-    alert('Must Insert a Task')
+    lunchBadInputMessageBox()
   }
   setLocalStorage(
     CreateNewJsonData(toDoDataList, inProgressDataList, doneTasksDataList)
@@ -406,8 +406,10 @@ function loadDataFromApi() {
     setLocalStorage(
       CreateNewJsonData(toDoDataList, inProgressDataList, doneTasksDataList)
     )
+
     removeLoader()
     location.reload()
+    lunchSuccessMessageBox()
   })
 }
 
@@ -441,12 +443,10 @@ function saveDataToApi() {
 
     if (!response.ok) {
       removeLoader()
-      alert(
-        'Sorry there may have been an error saving the data pls try again, Error Status: ' +
-          response.statusText
-      )
+      lunchErrorMessageBox()
     } else {
       removeLoader()
+      lunchSuccessMessageBox()
     }
 
     // return await response.json()
@@ -524,37 +524,6 @@ function dragDrop(task) {
   })
 }
 
-// tasks.forEach((task) => {
-//   task.addEventListener('dragstart', (e) => {
-//     task.classList.add('dragging')
-//     altNumberRemove(task.parentElement.classList[0], task.textContent)
-//   })
-//   task.addEventListener('dragend', (e) => {
-//     task.classList.remove('dragging')
-//     try {
-//       if (task.parentElement.classList[0] === 'to-do-tasks') {
-//         const toDoUlSection = document.querySelector('.to-do-tasks')
-//         toDoDataList.unshift(task.textContent)
-//         setLocalStorage(
-//           CreateNewJsonData(toDoDataList, inProgressDataList, doneTasksDataList)
-//         )
-//       } else if (task.parentElement.classList[0] === 'in-progress-tasks') {
-//         const inProgressUlSection = document.querySelector('.in-progress-tasks')
-//         inProgressDataList.unshift(task.textContent)
-//         setLocalStorage(
-//           CreateNewJsonData(toDoDataList, inProgressDataList, doneTasksDataList)
-//         )
-//       } else {
-//         const doneTasksUlSection = document.querySelector('.done-tasks')
-//         doneTasksDataList.unshift(task.textContent)
-//         setLocalStorage(
-//           CreateNewJsonData(toDoDataList, inProgressDataList, doneTasksDataList)
-//         )
-//       }
-//     } catch (e) {}
-//   })
-// })
-
 containers.forEach((container) => {
   container.addEventListener('dragover', (e) => {
     e.preventDefault()
@@ -569,7 +538,11 @@ containers.forEach((container) => {
         task.remove()
       } catch (e) {}
     } else {
-      container.insertBefore(task, afterElement)
+      try {
+        container.insertBefore(task, afterElement)
+      } catch (e) {
+        lunchDeletedItemMessageBox()
+      }
     }
   })
 })
@@ -589,4 +562,125 @@ function getDragAfterElement(container, y) {
     },
     { offset: Number.NEGATIVE_INFINITY }
   ).element
+}
+
+// Personal Additon = Button Tool tips based dataset
+function toolTip(itemId) {
+  const item = document.getElementById(itemId)
+  console.log(item)
+  const tooltipContent = item.dataset.tooltip
+  const tooltipSingle = document.createElement('p')
+  tooltipSingle.classList.add('tooltip')
+  tooltipSingle.textContent = tooltipContent
+  tooltipSingle.style.display = 'none'
+  item.addEventListener('mouseover', (e) => {
+    tooltipSingle.style.display = 'block'
+  })
+  item.addEventListener('mouseout', (e) => {
+    tooltipSingle.style.display = 'none'
+  })
+
+  item.append(tooltipSingle)
+}
+
+toolTip('save-btn')
+toolTip('load-btn')
+toolTip('trush')
+
+// Personal Additon = Message Box For success and Errors
+
+// this function will create the pop up div
+function createSuccessMssage(
+  messageColor,
+  messageTitle,
+  message,
+  emoji,
+  divbackground
+) {
+  const successMssageBox = document.createElement('div')
+  successMssageBox.classList.add('popup')
+  successMssageBox.classList.add('center')
+  const icon = document.createElement('div')
+  icon.classList.add('icon')
+  const iconEmoji = document.createElement('i')
+  iconEmoji.textContent = emoji
+  iconEmoji.classList.add('fa')
+  iconEmoji.classList.add('fa-check')
+  icon.appendChild(iconEmoji)
+  successMssageBox.appendChild(icon)
+  const title = document.createElement('div')
+  title.classList.add('title')
+  title.textContent = messageTitle // success/ Error
+  title.style.color = messageColor
+  successMssageBox.appendChild(title)
+  const description = document.createElement('div')
+  description.classList.add('description')
+  description.textContent = message // enter the message
+  successMssageBox.appendChild(description)
+  const dismissBtn = document.createElement('div')
+  dismissBtn.classList.add('dismiss-btn')
+  const dismissPopupBtn = document.createElement('button')
+  dismissPopupBtn.setAttribute('id', 'dismiss-popup-btn')
+  dismissPopupBtn.textContent = 'Dismiss'
+  dismissPopupBtn.addEventListener('click', RemoveSuccessMssage)
+  dismissBtn.appendChild(dismissPopupBtn)
+  successMssageBox.appendChild(dismissBtn)
+  successMssageBox.setAttribute('id', 'successMssageBox')
+  successMssageBox.style.zIndex = 200
+  successMssageBox.style.backgroundColor = divbackground
+  const body = document.body
+  body.append(successMssageBox)
+}
+
+// this function will connect to the dismiss function and remove the div
+function RemoveSuccessMssage() {
+  const successMssageBox = document.getElementById('successMssageBox')
+  successMssageBox.remove()
+}
+
+// this function will lunch the a Success Div
+function lunchSuccessMessageBox() {
+  createSuccessMssage(
+    'green',
+    'Success',
+    'Youre On Track, Keep Up!',
+    '✔️',
+    'white'
+  )
+  const successMssageBox = document.getElementById('successMssageBox')
+  successMssageBox.classList.add('active')
+}
+// lunchSuccessMessageBox()
+
+// this function will lunch the a Error Div
+
+function lunchErrorMessageBox() {
+  createSuccessMssage(
+    'red',
+    'Error',
+    'We are sorry something may have gone wrong, please try again later',
+    '❌',
+    'white'
+  )
+  const successMssageBox = document.getElementById('successMssageBox')
+  successMssageBox.classList.add('active')
+}
+// lunchErrorMessageBox()
+
+function lunchBadInputMessageBox() {
+  createSuccessMssage('red', 'Error', 'Must Insert a Task', '❌', 'white')
+  const successMssageBox = document.getElementById('successMssageBox')
+  successMssageBox.classList.add('active')
+}
+
+function lunchDeletedItemMessageBox() {
+  createSuccessMssage(
+    'red',
+    'This Item Was Deleted',
+    'We are sorry It is not possible to add back an item after set to trush',
+    '❌',
+    'white'
+  )
+  const successMssageBox = document.getElementById('successMssageBox')
+  successMssageBox.classList.add('active')
 }

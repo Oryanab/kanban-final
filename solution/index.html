@@ -27,8 +27,10 @@
         />
       </div>
       <div id="button-div">
-        <button id="save-btn">save</button>
-        <button id="load-btn">load</button>
+        <button data-tooltip="Backup your progress" id="save-btn">save</button>
+        <button data-tooltip="Download your backup Progress" id="load-btn">
+          load
+        </button>
       </div>
     </div>
     <div class="section-divs">
@@ -53,7 +55,11 @@
         <button id="submit-add-done" class="add-task-btn">+</button>
       </div>
     </div>
-    <ul class="trush" id="trush">
+    <ul
+      data-tooltip="Drag here tasks you wish to remove"
+      class="trush"
+      id="trush"
+    >
       🗑️
     </ul>
   </body>
