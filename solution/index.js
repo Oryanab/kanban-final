@@ -91,62 +91,36 @@ function setLocalStorage(jsonData) {
 */
 const submintToDoBtn = document.getElementById('submit-add-to-do') // Button
 const inputToDo = document.getElementById('add-to-do-task') // Inputs field
-submintToDoBtn.addEventListener('click', (e) => {
-  if (inputToDo.value.length > 0) {
-    toDoDataList.unshift(inputToDo.value)
-    submintToDoBtn.parentElement.children[1].prepend(
-      createTaskElement(toDoDataList[0])
-    )
-  } else {
-    lunchBadInputMessageBox()
-  }
-  setLocalStorage(
-    CreateNewJsonData(toDoDataList, inProgressDataList, doneTasksDataList)
-  )
-  inputToDo.value = ''
-})
-
+submitNewTask(submintToDoBtn, inputToDo, toDoDataList)
 /*
    Create a new In Progress element and Add it to the in-progress
 */
 const submintInProgressBtn = document.getElementById('submit-add-in-progress')
 const inputInProgress = document.getElementById('add-in-progress-task')
-submintInProgressBtn.addEventListener('click', (e) => {
-  if (inputInProgress.value.length > 0) {
-    inProgressDataList.unshift(inputInProgress.value)
-    submintInProgressBtn.parentElement.children[1].prepend(
-      createTaskElement(inProgressDataList[0])
-    )
-  } else {
-    lunchBadInputMessageBox()
-  }
-  setLocalStorage(
-    CreateNewJsonData(toDoDataList, inProgressDataList, doneTasksDataList)
-  )
-  inputInProgress.value = ''
-})
-
+submitNewTask(submintInProgressBtn, inputInProgress, inProgressDataList)
 /*
    Create a new done-Tasks element and Add it to the done
 */
-
 const submintDoneTasksBtn = document.getElementById('submit-add-done')
 const inputDoneTasks = document.getElementById('add-done-task')
+submitNewTask(submintDoneTasksBtn, inputDoneTasks, doneTasksDataList)
 
-submintDoneTasksBtn.addEventListener('click', (e) => {
-  if (inputDoneTasks.value.length > 0) {
-    doneTasksDataList.unshift(inputDoneTasks.value)
-    submintDoneTasksBtn.parentElement.children[1].prepend(
-      createTaskElement(doneTasksDataList[0])
+function submitNewTask(submitBtn, sectionInputField, sectionDataList) {
+  submitBtn.addEventListener('click', (e) => {
+    if (sectionInputField.value.length > 0) {
+      sectionDataList.unshift(sectionInputField.value)
+      submitBtn.parentElement.children[1].prepend(
+        createTaskElement(sectionDataList[0])
+      )
+    } else {
+      lunchBadInputMessageBox()
+    }
+    setLocalStorage(
+      CreateNewJsonData(toDoDataList, inProgressDataList, doneTasksDataList)
     )
-  } else {
-    lunchBadInputMessageBox()
-  }
-  setLocalStorage(
-    CreateNewJsonData(toDoDataList, inProgressDataList, doneTasksDataList)
-  )
-  inputDoneTasks.value = ''
-})
+    sectionInputField.value = ''
+  })
+}
 
 /*
     Aim (createTaskElement): The function will take an input a text and return a Task element, in addition, it will change its Attribute to draggable and implement the drag and drop feature, as well as changing its content to contentEditable which allow changing its content by double-clicking a task element, then it will return the newly created Task 'LI' element.
@@ -212,62 +186,41 @@ document.addEventListener('keydown', (hoverTaskEvent) => {
   if (hoverTaskEvent.altKey && hoverTaskEvent.keyCode === 49) {
     allTaskItems.forEach((currentTask) => {
       if (allHoveredItems[allHoveredItems.length - 1] === currentTask) {
-        altNumberRemove(
-          currentTask.parentElement.classList[0],
-          currentTask.textContent
-        )
-        currentTask.remove()
-        altNumberToDoAdd(currentTask.textContent)
+        altNumberTask(currentTask, '.to-do-tasks', toDoDataList)
       }
     })
   } else if (hoverTaskEvent.altKey && hoverTaskEvent.keyCode === 50) {
     allTaskItems.forEach((currentTask) => {
       if (allHoveredItems[allHoveredItems.length - 1] === currentTask) {
-        altNumberRemove(
-          currentTask.parentElement.classList[0],
-          currentTask.textContent
-        )
-        currentTask.remove()
-        altNumberInProgressAdd(currentTask.textContent)
+        altNumberTask(currentTask, '.in-progress-tasks', inProgressDataList)
       }
     })
   } else if (hoverTaskEvent.altKey && hoverTaskEvent.keyCode === 51) {
     allTaskItems.forEach((currentTask) => {
       if (allHoveredItems[allHoveredItems.length - 1] === currentTask) {
-        altNumberRemove(
-          currentTask.parentElement.classList[0],
-          currentTask.textContent
-        )
-        currentTask.remove()
-        altNumberDoneTaskAdd(currentTask.textContent)
+        altNumberTask(currentTask, '.done-tasks', doneTasksDataList)
       }
     })
   }
 })
 
+function altNumberTask(currentTask, ulClassName, sectionDataList) {
+  altNumberRemove(
+    currentTask.parentElement.classList[0],
+    currentTask.textContent
+  )
+  currentTask.remove()
+  altNumberTaskAdd(currentTask.textContent, ulClassName, sectionDataList)
+}
+
 /*
     Aim (altNumberToDoAdd, altNumberInProgressAdd, altNumberDoneTaskAdd): Functions will receive the element which was passed textContent and add it to the beginning of the New Section's Data List, then it will also create a new Task Element of that textContent and add it to the beginning of the Section. Then it will save the changes of the Data Lists to the Local Storage using setLocalStorage.
 */
-function altNumberToDoAdd(text) {
-  const toDoUlSection = document.querySelector('.to-do-tasks')
-  toDoDataList.unshift(text)
-  toDoUlSection.prepend(createTaskElement(toDoDataList[0]))
-  setLocalStorage(
-    CreateNewJsonData(toDoDataList, inProgressDataList, doneTasksDataList)
-  )
-}
-function altNumberInProgressAdd(text) {
-  const inProgressUlSection = document.querySelector('.in-progress-tasks')
-  inProgressDataList.unshift(text)
-  inProgressUlSection.prepend(createTaskElement(inProgressDataList[0]))
-  setLocalStorage(
-    CreateNewJsonData(toDoDataList, inProgressDataList, doneTasksDataList)
-  )
-}
-function altNumberDoneTaskAdd(text) {
-  const doneTasksUlSection = document.querySelector('.done-tasks')
-  doneTasksDataList.unshift(text)
-  doneTasksUlSection.prepend(createTaskElement(doneTasksDataList[0]))
+
+function altNumberTaskAdd(taskContent, ulClassName, sectionDataList) {
+  const doneTasksUlSection = document.querySelector(ulClassName)
+  sectionDataList.unshift(taskContent)
+  doneTasksUlSection.prepend(createTaskElement(sectionDataList[0]))
   setLocalStorage(
     CreateNewJsonData(toDoDataList, inProgressDataList, doneTasksDataList)
   )
@@ -347,6 +300,8 @@ displayElementsByQuary()
 /*
  Aim (loadDataFromApi): This function used for the 'User should be able to save and load their tasks from the API and save it to the local storage' When the load button gets clicked the function will send a get request to the API, All the Current Data List will be reset by Array.length = 0, then the function will get from the response JSON Sections (todo, 'in-progress & done) the API data and restore it into the Data Lists which will be saved into the localStorage by setLocalStorage function. In case the response JSON from the API is empty of data, the function will catch the error and pass. while awaiting the API response, there will be a loader and at the end a short success message. The function is always active and should be called right at the bottom after the function.
 */
+
+// CHANGE SECTION
 function loadDataFromApi() {
   const load = document.getElementById('load-btn')
   load.addEventListener('click', async (loadApiData) => {
@@ -360,27 +315,15 @@ function loadDataFromApi() {
     toDoDataList.length = 0
     inProgressDataList.length = 0
     doneTasksDataList.length = 0
-    apiJsonData.tasks.todo.forEach((toDoApiItem) => {
-      try {
-        toDoDataList.push(toDoApiItem)
-        const toDoUlSection = document.querySelector('.to-do-tasks')
-        toDoUlSection.appendChild(createTaskElement(toDoApiItem))
-      } catch (e) {}
-    })
-    apiJsonData.tasks['in-progress'].forEach((inProgressApiItem) => {
-      try {
-        inProgressDataList.push(inProgressApiItem)
-        const inProgressUlSection = document.querySelector('.in-progress-tasks')
-        inProgressUlSection.appendChild(createTaskElement(inProgressApiItem))
-      } catch (e) {}
-    })
-    apiJsonData.tasks.done.forEach((doneTaskApiItem) => {
-      try {
-        doneTasksDataList.push(doneTaskApiItem)
-        const doneTasksUlSection = document.querySelector('.done-tasks')
-        doneTasksUlSection.appendChild(createTaskElement(doneTaskApiItem))
-      } catch (e) {}
-    })
+
+    loadDataListFromApi(apiJsonData, 'todo', toDoDataList, '.to-do-tasks')
+    loadDataListFromApi(
+      apiJsonData,
+      'in-progress',
+      inProgressDataList,
+      '.in-progress-tasks'
+    )
+    loadDataListFromApi(apiJsonData, 'done', doneTasksDataList, '.done-tasks')
 
     setLocalStorage(
       CreateNewJsonData(toDoDataList, inProgressDataList, doneTasksDataList)
@@ -391,9 +334,17 @@ function loadDataFromApi() {
     lunchSuccessMessageBox()
   })
 }
-
 loadDataFromApi()
 
+function loadDataListFromApi(apiJsonData, taskType, dataList, dataListClass) {
+  apiJsonData.tasks[taskType].forEach((ApiItem) => {
+    try {
+      dataList.push(ApiItem)
+      const UlSection = document.querySelector(dataListClass)
+      UlSection.appendChild(createTaskElement(ApiItem))
+    } catch (e) {}
+  })
+}
 /*
  Aim (saveDataToApi): This function used for the 'User should be saved tasks from the API When the save button gets clicked the function will send a post request to the API, the post request will include the current localStorage state using the function lunchLocalStorage() which continuously holders the current state of the localStorage. By clicking save it will change the API Data to the current state of the localStorage, when the request fails an Error massage Box will be shown, otherwise, a success massage Box will be shown. The function is always active and should be called right at the bottom after the function.
 */
