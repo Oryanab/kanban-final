@@ -1,4 +1,6 @@
 'use strict'
+// import all funtions and styles:
+import style from './styles.css'
 
 /*
     Aim (lunchLocalStorage): read all the exisiting local data and return it

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="./index.js" defer></script>
+    <link rel="stylesheet" href="./styles.css" />
+    <title id="page-title">Company Tasks manager</title>
+  <script defer src="main.bundle.js"></script></head>
+  <body>
+    <div id="main-div">
+      <div id="logo-div">
+        <img
+          src="https://store-images.s-microsoft.com/image/apps.11856.811f7e45-09fd-4998-a57a-3f8bcf09f141.68aeb64e-c248-4331-9dc2-7591905fff66.7fd56d71-ad38-43b5-8ce8-b59254d440d2.png"
+          alt=""
+          style="height: 50px"
+        />
+        <h1>Task Manager</h1>
+      </div>
+      <div id="search-div">
+        <input
+          class="css-input"
+          id="search"
+          placeholder="Search Tasks..."
+          type="text"
+        />
+      </div>
+      <div id="button-div">
+        <a target="_blank" href="https://oryanab.github.io/kanban-final/"
+          ><button data-tooltip="How To Use Tasks Manager" id="tutorial">
+            Tutorial
+          </button></a
+        >
+        <button data-tooltip="Backup your progress" id="save-btn">save</button>
+        <button data-tooltip="Download your backup Progress" id="load-btn">
+          load
+        </button>
+      </div>
+    </div>
+    <div class="section-divs">
+      <div id="section-1" class="section">
+        <h2 class="section-title">To Do Tasks</h2>
+        <ul class="to-do-tasks"></ul>
+        <input class="css-input" id="add-to-do-task" type="text" />
+        <button id="submit-add-to-do" class="add-task-btn">+</button>
+      </div>
+
+      <div id="section-2" class="section">
+        <h2 class="section-title">In Progress Tasks</h2>
+        <ul class="in-progress-tasks"></ul>
+        <input class="css-input" id="add-in-progress-task" type="text" />
+        <button id="submit-add-in-progress" class="add-task-btn">+</button>
+      </div>
+
+      <div id="section-3" class="section">
+        <h2 class="section-title">Done Tasks</h2>
+        <ul class="done-tasks"></ul>
+        <input class="css-input" id="add-done-task" type="text" />
+        <button id="submit-add-done" class="add-task-btn">+</button>
+      </div>
+    </div>
+    <ul
+      data-tooltip="Drag here tasks you wish to remove"
+      class="trush"
+      id="trush"
+    >
+      🗑️
+    </ul>
+  </body>
+</html>

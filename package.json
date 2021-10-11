@@ -1,9 +1,13 @@
 {
   "name": "final",
   "version": "1.0.0",
-  "description": "",
+  "description": "Welcome to your new task management application, where you can write all of your tasks and keep track of your progress!",
   "main": "index.js",
   "scripts": {
+    "build": "webpack",
+    "dev": "webpack server",
+    "lint": "eslint --fix main.js",
+    "format": "prettier -w .",
     "test": "jest",
     "final": "npm i && node ./scripts/getBin.js"
   },
@@ -11,11 +15,23 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "css-loader": "^6.4.0",
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.24.2",
+    "eslint-plugin-prettier": "^4.0.0",
     "gifencoder": "^2.0.1",
+    "html-webpack-plugin": "^5.3.2",
     "jest": "^27.1.1",
     "nock-puppeteer": "^1.0.6",
     "png-js": "^1.0.0",
-    "puppeteer": "^10.2.0"
+    "prettier": "^2.4.1",
+    "puppeteer": "^10.2.0",
+    "style-loader": "^3.3.0",
+    "webpack": "^5.58.1",
+    "webpack-cli": "^4.9.0",
+    "webpack-dev-server": "^4.3.1"
   },
   "jest": {
     "moduleFileExtensions": [
@@ -24,5 +40,17 @@
     "testMatch": [
       "**/tests/**/*.test.+(js)"
     ]
-  }
+  },
+  "directories": {
+    "test": "tests"
+  },
+  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Oryanab/kanban-final.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Oryanab/kanban-final/issues"
+  },
+  "homepage": "https://github.com/Oryanab/kanban-final#readme"
 }
