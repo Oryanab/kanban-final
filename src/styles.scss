@@ -47,7 +47,7 @@ li {
   background-color: white;
   display: flex;
 
-  width: min(90% 75rem);
+  // width: min(90% 75rem);
   grid-auto-flow: row;
   justify-content: space-between;
   box-shadow: black 100px;
@@ -164,7 +164,7 @@ button:hover {
 .section-divs {
   display: grid;
   margin: 5rem auto;
-  width: min(90% 75rem);
+  // width: min(90% 75rem);
   grid-auto-flow: row;
   justify-items: center;
   justify-content: space-evenly;

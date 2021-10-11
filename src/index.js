@@ -1,6 +1,6 @@
 'use strict'
 // import all funtions and styles:
-import style from './styles.css'
+import style from './styles.scss'
 
 /*
     Aim (lunchLocalStorage): read all the exisiting local data and return it
@@ -220,9 +220,9 @@ function altNumberTask(currentTask, ulClassName, sectionDataList) {
 */
 
 function altNumberTaskAdd(taskContent, ulClassName, sectionDataList) {
-  const doneTasksUlSection = document.querySelector(ulClassName)
+  const TasksUlSection = document.querySelector(ulClassName)
   sectionDataList.unshift(taskContent)
-  doneTasksUlSection.prepend(createTaskElement(sectionDataList[0]))
+  TasksUlSection.prepend(createTaskElement(sectionDataList[0]))
   setLocalStorage(
     CreateNewJsonData(toDoDataList, inProgressDataList, doneTasksDataList)
   )

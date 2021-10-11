@@ -14,7 +14,14 @@ module.exports = {
   // loaders for css
   module: {
     rules: [
-      { test: /.css$/, use: ['style-loader', 'css-loader'] },
+      {
+        test: /.scss$/,
+        use: [
+          'style-loader', // 3. inject styles into DOM
+          'css-loader', // 2. turn css into commonjs
+          'sass-loader', // 1. turn sass into css
+        ],
+      },
       { test: /.(svg|ico|png|gif|jpeg)$/, type: 'asset/resource' },
     ],
   },
